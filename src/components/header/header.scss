@@ -13,6 +13,10 @@
     .logo {
       height: 100%;
       width: 4em;
+
+      &:hover {
+        width: 4.4em;
+      }
     }
   }
 

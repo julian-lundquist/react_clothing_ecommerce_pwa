@@ -1,5 +1,5 @@
 import firebase from "firebase/app";
-import 'firebase/storage';
+import 'firebase/firestore';
 import 'firebase/auth';
 
 const config = {
@@ -15,7 +15,33 @@ const config = {
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();
-export const storage = firebase.storage();
+export const storage = firebase.firestore();
+
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+    if (!userAuth) return;
+
+    const userRef = storage.doc(`users/${userAuth.uid}`);
+
+    const snapShot = await userRef.get();
+
+    if (!snapShot.exists) {
+        const { displayName, email } = userAuth;
+        const createdDate = new Date();
+
+        try {
+            await userRef.set({
+                displayName,
+                email,
+                createdDate,
+                ...additionalData
+            });
+        } catch (e) {
+            console.log('Error created user: ', e.message);
+        }
+    }
+
+    return userRef;
+}
 
 const provider = new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });

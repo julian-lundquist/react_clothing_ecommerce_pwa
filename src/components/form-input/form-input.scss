@@ -16,13 +16,13 @@ $main-color: black;
     background-color: white;
     color: $sub-color;
     font-size: 18px;
-    padding: 10px 10px 10px 5px;
+    padding: 10px 0;
     display: block;
     width: 100%;
     border: none;
     border-radius: 0;
     border-bottom: 1px solid $sub-color;
-    margin: 25px 0;
+    margin: 1em 0;
 
     &:focus {
       outline: none;

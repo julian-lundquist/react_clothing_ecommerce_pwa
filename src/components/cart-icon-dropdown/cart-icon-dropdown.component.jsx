@@ -6,7 +6,7 @@ import CartItem from "../cart-item/cart-item.component";
 const CartDropdown = ({ cartItems }) => {
     return (
         <div className={'cart-dropdown'}>
-            <div className={'cart-items'}>
+            <div id={'style-8'} className={'cart-items'}>
                 {
                     cartItems.map(cartItem => <CartItem key={cartItem.id} item={cartItem} />)
                 }

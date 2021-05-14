@@ -1,11 +1,11 @@
 import './homepage.scss'
 
-import Directory from "../../components/menu-directory/menu-directory.component";
+import MenuDirectory from "../../components/menu-directory/menu-directory.component";
 
 const HomePage = () => {
     return (
         <div className={'homepage'}>
-            <Directory />
+            <MenuDirectory />
         </div>
     );
 }

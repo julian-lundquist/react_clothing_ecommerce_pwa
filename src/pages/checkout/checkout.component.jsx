@@ -29,11 +29,10 @@ const CheckoutPage = ({ cartItems, totalPrice }) => {
                 cartItems.map(cartItem => <CheckoutItem key={cartItem.id} cartItem={cartItem} />)
             }
             <div className={'totalPrice'}>
-                TOTAL: ${ totalPrice }
+                {
+                    totalPrice > 0 ? <StripeCheckout total={totalPrice} /> : ''
+                }
             </div>
-            {
-                totalPrice > 0 ? <StripeCheckout /> : ''
-            }
         </div>
     );
 }

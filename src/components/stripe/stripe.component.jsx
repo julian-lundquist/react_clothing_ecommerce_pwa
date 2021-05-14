@@ -10,7 +10,7 @@ import {
 } from '@stripe/react-stripe-js';
 import CustomButton from "../custom-button/custom-button.component";
 
-const CheckoutDisplay = () => {
+const CheckoutDisplay = ({total}) => {
     const stripe = useStripe();
     const elements = useElements();
 
@@ -29,10 +29,10 @@ const CheckoutDisplay = () => {
                 options={{
                     style: {
                         base: {
-                            fontSize: '16px',
+                            fontSize: '22px',
                             color: '#424770',
                             '::placeholder': {
-                                color: '#aab7c4',
+                                color: '#9099a3',
                             },
                         },
                         invalid: {
@@ -42,7 +42,7 @@ const CheckoutDisplay = () => {
                 }}
             />
             <CustomButton type="submit" disabled={!stripe}>
-                Pay
+                Pay ${total}
             </CustomButton>
         </form>
     );
@@ -50,9 +50,9 @@ const CheckoutDisplay = () => {
 
 const stripePromise = loadStripe('pk_test_51IqrBVBKQUM0yehkYlfWbvYUhSXGa0GxbVv8JWRXP5ZOCEEc2yijCBXdSP1K7rKkQmktrZxPNZPKNCJLwLLIkqOk00cLAYfNDW');
 
-const StripeCheckout = () => (
+const StripeCheckout = ({ total }) => (
     <Elements stripe={stripePromise}>
-        <CheckoutDisplay />
+        <CheckoutDisplay total={total} />
     </Elements>
 );
 

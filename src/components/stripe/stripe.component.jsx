@@ -33,12 +33,6 @@ const CARD_OPTIONS = {
     },
 };
 
-const CardField = ({onChange}) => (
-    <div className="FormRow">
-        <CardElement options={CARD_OPTIONS} onChange={onChange} />
-    </div>
-);
-
 const Field = ({
                    label,
                    id,
@@ -131,6 +125,7 @@ const CheckoutDisplay = ({total}) => {
         });
 
         setProcessing(false);
+        console.log(payload)
 
         if (payload.error) {
             setError(payload.error);
@@ -205,11 +200,15 @@ const CheckoutDisplay = ({total}) => {
             <CardElement
                 className={'stripe-inputs'}
                 options={CARD_OPTIONS}
+                onChange={e => {
+                    setError(e.error)
+                    setCardComplete(e.complete)
+                }}
             />
 
             {error && <ErrorMessage>{error.message}</ErrorMessage>}
-            <CustomButton type="submit" processing={processing} error={error} disabled={!stripe}>
-                Pay ${total}
+            <CustomButton type="submit" error={error} disabled={processing || !stripe}>
+                { processing ? 'Processing...' : `Pay $${total}` }
             </CustomButton>
         </form>
     );

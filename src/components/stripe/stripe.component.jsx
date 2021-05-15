@@ -228,9 +228,11 @@ const ELEMENTS_OPTIONS = {
 const stripePromise = loadStripe('pk_test_51IqrBVBKQUM0yehkYlfWbvYUhSXGa0GxbVv8JWRXP5ZOCEEc2yijCBXdSP1K7rKkQmktrZxPNZPKNCJLwLLIkqOk00cLAYfNDW');
 
 const StripeCheckout = ({ total }) => (
-    <Elements stripe={stripePromise} options={ELEMENTS_OPTIONS}>
-        <CheckoutDisplay total={total} />
-    </Elements>
+    <div className={'CheckoutWrapper'}>
+        <Elements stripe={stripePromise} options={ELEMENTS_OPTIONS}>
+            <CheckoutDisplay total={total} />
+        </Elements>
+    </div>
 );
 
 export default StripeCheckout;

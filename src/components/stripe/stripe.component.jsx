@@ -210,6 +210,15 @@ const CheckoutDisplay = ({total}) => {
             <CustomButton type="submit" error={error} disabled={processing || !stripe}>
                 { processing ? 'Processing...' : `Pay $${total}` }
             </CustomButton>
+            <div className={'test-payment-warning'}>
+                *When testing a payment, the card number must be...*
+                <br/>
+                Card: 4242 4242 4242 4242
+                <br/>
+                Exp: Any valid date
+                <br/>
+                CVV: Any
+            </div>
         </form>
     );
 };

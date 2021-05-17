@@ -4,7 +4,7 @@ import 'firebase/auth';
 
 const config = {
     apiKey: "AIzaSyDeoUBiXrBIT3lYvbkOnwHUMI0AiWT6ny8",
-        authDomain: "ecommerce-test-d3ba8.firebaseapp.com",
+    authDomain: "ecommerce-test-d3ba8.firebaseapp.com",
     projectId: "ecommerce-test-d3ba8",
     storageBucket: "ecommerce-test-d3ba8.appspot.com",
     messagingSenderId: "68886513636",
@@ -15,12 +15,12 @@ const config = {
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();
-export const storage = firebase.firestore();
+export const firestore = firebase.firestore();
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
     if (!userAuth) return;
 
-    const userRef = storage.doc(`users/${userAuth.uid}`);
+    const userRef = firestore.doc(`users/${userAuth.uid}`);
 
     const snapShot = await userRef.get();
 
@@ -41,6 +41,36 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     }
 
     return userRef;
+}
+
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = firestore.collection(collectionKey);
+
+    const batch = firestore.batch();
+    objectsToAdd.forEach(obj => {
+        const newDocRef = collectionRef.doc();
+        batch.set(newDocRef, obj);
+    });
+
+    return await batch.commit();
+}
+
+export const convertShopItemsSnapshotToMap = (shopItems) => {
+    const transformedCollection = shopItems.docs.map(shopCategory => {
+        const { title, items } = shopCategory.data();
+
+        return {
+            routeName: encodeURI(title.toLowerCase()),
+            id: shopCategory.id,
+            title,
+            items
+        }
+    });
+
+    return transformedCollection.reduce((accumulator, shopCategory) => {
+        accumulator[shopCategory.title.toLowerCase()] = shopCategory;
+        return accumulator;
+    }, {});
 }
 
 const provider = new firebase.auth.GoogleAuthProvider();

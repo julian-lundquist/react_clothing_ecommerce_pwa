@@ -6,18 +6,20 @@ import Header from "./components/header/header.component";
 import AuthenticationPage from "./pages/authentication/authentication.component";
 
 import {Redirect, Route, Switch} from "react-router";
-import {auth, createUserProfileDocument} from "./firebase/firebase.utils";
 import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.actions";
 import {createStructuredSelector} from "reselect";
-import {selectCurrentUser} from "./redux/user/user.selectors";
+
 import CheckoutPage from "./pages/checkout/checkout.component";
+
+import {auth, createUserProfileDocument, addCollectionAndDocuments} from "./firebase/firebase.utils";
+import {selectCurrentUser} from "./redux/user/user.selectors";
 
 class App extends React.Component {
     unsubscribeFromAuth;
 
     componentDidMount() {
-        const { setCurrentUser } = this.props;
+        const { setCurrentUser, shopItemsArray } = this.props;
 
         this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
             if (userAuth) {

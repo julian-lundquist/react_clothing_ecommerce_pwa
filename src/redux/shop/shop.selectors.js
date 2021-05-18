@@ -16,6 +16,6 @@ export const selectShopItemsArray = createSelector(
 export const selectShopCategory = memoize((collectionUrlParam) =>
     createSelector(
     [selectShopItems],
-    shopItems => shopItems ? shopItems[collectionUrlParam] : []
+    shopItems => shopItems ? shopItems[collectionUrlParam] : null
     )
 );

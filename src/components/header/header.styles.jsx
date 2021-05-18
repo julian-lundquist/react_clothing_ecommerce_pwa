@@ -2,25 +2,6 @@ import styled, { css } from 'styled-components';
 import {Link} from "react-router-dom";
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 
-const OptionsContainerOptionStyles = css`
-    font-size: 1.6em;
-    padding: 10px 16px;
-    cursor: pointer;
-
-    &:hover {
-        color: dimgray;
-    }
-`;
-
-const LogoContainerLogoStyles = css`
-    height: 100%;
-    width: 4em;
-    
-    &:hover {
-        width: 4.4em;
-    }
-`;
-
 export const HeaderContainer = styled.div`
     height: 70px;
     width: 100%;
@@ -45,7 +26,12 @@ export const LogoContainer = styled(Link)`
 `;
 
 export const LogoSVG = styled(Logo)`
-    ${LogoContainerLogoStyles}
+    height: 100%;
+    width: 4em;
+    
+    &:hover {
+        width: 4.4em;
+    }
 `;
 
 export const OptionsContainer = styled.div`
@@ -57,10 +43,12 @@ export const OptionsContainer = styled.div`
 `;
 
 export const OptionLink = styled(Link)`
-    ${OptionsContainerOptionStyles}
-`;
+    font-size: 1.6em;
+    padding: 10px 16px;
+    cursor: pointer;
 
-export const OptionDiv = styled.div`
-    ${OptionsContainerOptionStyles}
+    &:hover {
+        color: dimgray;
+    }
 `;
 

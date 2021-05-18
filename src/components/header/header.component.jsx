@@ -3,12 +3,11 @@ import { createStructuredSelector } from "reselect";
 
 import {auth} from "../../firebase/firebase.utils";
 
-import { ReactComponent as Logo } from '../../assets/crown.svg';
 import CartIcon from "../cart-icon/cart-icon.component";
 import CartDropdown from "../cart-icon-dropdown/cart-icon-dropdown.component";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
 import { selectCartHidden } from "../../redux/cart/cart.selectors";
-import {HeaderContainer, LogoContainer, LogoSVG, OptionDiv, OptionLink, OptionsContainer} from "./header.styles";
+import {HeaderContainer, LogoContainer, LogoSVG, OptionLink, OptionsContainer} from "./header.styles";
 
 const Header = ({ currentUser, hidden }) => (
     <HeaderContainer>
@@ -24,9 +23,9 @@ const Header = ({ currentUser, hidden }) => (
             </OptionLink>
             {
                 currentUser ?
-                    <OptionDiv onClick={() => auth.signOut()}>
+                    <OptionLink as={'div'} onClick={() => auth.signOut()}>
                         SIGN OUT
-                    </OptionDiv>
+                    </OptionLink>
                     :
                     <OptionLink to={'/signin'}>
                         SIGN IN

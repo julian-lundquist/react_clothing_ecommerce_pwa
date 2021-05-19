@@ -1,23 +1,30 @@
-import './checkout-item.scss';
 import { connect } from "react-redux";
 import {addItem, clearItemFromCart, removeItem} from "../../redux/cart/cart.actions";
+
+import {
+    ArrowContainer,
+    CheckoutImageContainer,
+    CheckoutItemContainer,
+    CheckoutNameContainer, CheckoutPriceContainer,
+    CheckoutQuantityContainer, CheckoutQuantityValueContainer, CheckoutRemoveItemButton
+} from "./checkout-item.styles";
 
 const CheckoutItem = ({ cartItem, clearItem, addItem, removeItem }) => {
     const { name, imageUrl, price, quantity } = cartItem;
     return (
-        <div className={'checkout-item'}>
-            <div className={'image-container'}>
+        <CheckoutItemContainer>
+            <CheckoutImageContainer>
                 <img src={imageUrl} alt={'item'} />
-            </div>
-            <span className={'name'}>{name}</span>
-            <span className={'quantity'}>
-                <div className={'arrow'} onClick={() => removeItem(cartItem)}>&#10094;</div>
-                <span className={'value'}>{quantity}</span>
-                <div className={'arrow'} onClick={() => addItem(cartItem)}>&#10095;</div>
-            </span>
-            <span className={'price'}>${price}</span>
-            <div className={'remove-button'} onClick={() => clearItem(cartItem)}>&#10005;</div>
-        </div>
+            </CheckoutImageContainer>
+            <CheckoutNameContainer>{name}</CheckoutNameContainer>
+            <CheckoutQuantityContainer>
+                <ArrowContainer onClick={() => removeItem(cartItem)}>&#10094;</ArrowContainer>
+                <CheckoutQuantityValueContainer>{quantity}</CheckoutQuantityValueContainer>
+                <ArrowContainer className={'arrow'} onClick={() => addItem(cartItem)}>&#10095;</ArrowContainer>
+            </CheckoutQuantityContainer>
+            <CheckoutPriceContainer>${price}</CheckoutPriceContainer>
+            <CheckoutRemoveItemButton onClick={() => clearItem(cartItem)}>&#10005;</CheckoutRemoveItemButton>
+        </CheckoutItemContainer>
     );
 }
 

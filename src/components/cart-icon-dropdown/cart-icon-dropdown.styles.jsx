@@ -13,6 +13,15 @@ export const CartDropdownContainer = styled.div`
     top: 90px;
     right: 40px;
     z-index: 5;
+`;
+
+export const CartItemsContainer = styled.div`
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    overflow-x: auto;
+    overflow-y: auto;
     
     &::-webkit-scrollbar-track {
         border: 1px solid black;
@@ -27,15 +36,6 @@ export const CartDropdownContainer = styled.div`
     &::-webkit-scrollbar-thumb {
         background-color: #000000;
     }
-`;
-
-export const CartItemsContainer = styled.div`
-    height: 80%;
-    display: flex;
-    flex-direction: column;
-    overflow: scroll;
-    overflow-x: auto;
-    overflow-y: auto;
 `;
 
 export const CustomCheckoutButton = styled(CustomButton)`

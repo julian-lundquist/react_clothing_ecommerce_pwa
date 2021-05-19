@@ -1,39 +1,45 @@
-import './checkout.scss';
 import {createStructuredSelector} from "reselect";
 import {selectCartItems, selectCartTotalPrice} from "../../redux/cart/cart.selectors";
 import { connect } from "react-redux";
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 import StripeCheckout from "../../services/stripe/stripe.component";
 
+import {
+    CheckoutHeaderBlockContainer,
+    CheckoutHeaderContainer,
+    CheckoutPageContainer,
+    CheckoutTotalContainer
+} from "./checkout.styles";
+
 const CheckoutPage = ({ cartItems, totalPrice }) => {
     return (
-        <div className={'checkout-page'}>
-            <div className={'checkout-header'}>
-                <div className={'header-block'}>
+        <CheckoutPageContainer>
+            <CheckoutHeaderContainer>
+                <CheckoutHeaderBlockContainer>
                     <span>Product</span>
-                </div>
-                <div className={'header-block'}>
+                </CheckoutHeaderBlockContainer>
+                <CheckoutHeaderBlockContainer>
                     <span>Description</span>
-                </div>
-                <div className={'header-block'}>
+                </CheckoutHeaderBlockContainer>
+                <CheckoutHeaderBlockContainer>
                     <span>Quantity</span>
-                </div>
-                <div className={'header-block'}>
+                </CheckoutHeaderBlockContainer>
+                <CheckoutHeaderBlockContainer>
                     <span>Price</span>
-                </div>
-                <div className={'header-block'}>
+                </CheckoutHeaderBlockContainer>
+                <CheckoutHeaderBlockContainer>
                     <span>Remove</span>
-                </div>
-            </div>
+                </CheckoutHeaderBlockContainer>
+            </CheckoutHeaderContainer>
             {
                 cartItems.map(cartItem => <CheckoutItem key={cartItem.id} cartItem={cartItem} />)
             }
-            <div className={'totalPrice'}>
+            <CheckoutTotalContainer>
                 {
                     totalPrice > 0 ? <StripeCheckout total={totalPrice} /> : ''
                 }
-            </div>
-        </div>
+            </CheckoutTotalContainer>
+        </CheckoutPageContainer>
     );
 }
 

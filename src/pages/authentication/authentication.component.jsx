@@ -1,12 +1,13 @@
-import './authentication.scss';
 import SignInComponent from "../../components/sign-in/sign-in.component";
 import SignUpComponent from "../../components/sign-up/sign-up.component";
 
+import {AuthenticationPageContainer} from "./authentication.styles";
+
 const AuthenticationPage = () => (
-    <div className={'authentication-page'}>
+    <AuthenticationPageContainer>
         <SignInComponent />
         <SignUpComponent />
-    </div>
+    </AuthenticationPageContainer>
 );
 
 export default AuthenticationPage;

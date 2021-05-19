@@ -15,9 +15,9 @@ const CARD_OPTIONS = {
         base: {
             iconColor: '#1898ed',
             color: '#424770',
-            fontWeight: 500,
+            fontWeight: 'bold',
             fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
-            fontSize: '22px',
+            fontSize: '19px',
             fontSmoothing: 'antialiased',
             ':-webkit-autofill': {
                 color: '#fce883',

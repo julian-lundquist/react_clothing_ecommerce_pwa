@@ -40,7 +40,7 @@ export const CollectionPriceContainer = styled.span`
     text-align: right;
 `;
 
-export const ImageContainer = styled.div`
+export const CollectionImageContainer = styled.div`
     width: 100%;
     height: 95%;
     background-size: cover;

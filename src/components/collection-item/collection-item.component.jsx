@@ -4,14 +4,14 @@ import {
     CollectionFooterContainer,
     CollectionItemContainer,
     CollectionNameContainer, CollectionPriceContainer, CustomAddCartButton,
-    ImageContainer
+    CollectionImageContainer
 } from "./collection-item.styles";
 
 const CollectionItem = ({ item, addItem }) => {
     const { id, name, imageUrl, price } = item;
     return (
         <CollectionItemContainer key={id}>
-            <ImageContainer className={'image'} imageUrl={imageUrl} />
+            <CollectionImageContainer className={'image'} imageUrl={imageUrl} />
             <CollectionFooterContainer>
                 <CollectionNameContainer>{ name }</CollectionNameContainer>
                 <CollectionPriceContainer>${ price }</CollectionPriceContainer>

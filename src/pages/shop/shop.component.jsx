@@ -1,6 +1,4 @@
 import * as React from "react";
-
-import './shop.scss';
 import CollectionOverview from "../../components/collection-overview/collection-overview.component";
 import {Route} from "react-router";
 import CollectionPage from "../collection/collection.component";
@@ -8,16 +6,17 @@ import { firestore, convertShopItemsSnapshotToMap } from "../../firebase/firebas
 import { connect } from "react-redux";
 import {updateShopItems} from "../../redux/shop/shop.actions";
 
+import {ShopPageContainer} from "./shop.styles";
 
 class ShopPage extends React.Component {
     render() {
         const { match } = this.props;
 
         return (
-            <div className={'shop-page'}>
+            <ShopPageContainer>
                 <Route exact path={`${match.path}`} component={CollectionOverview} />
                 <Route path={`${match.path}/:categoryId`} component={CollectionPage} />
-            </div>
+            </ShopPageContainer>
         );
     }
 

@@ -1,12 +1,12 @@
 import CollectionItem from "../collection-item/collection-item.component";
 
-import './collection-preview.scss';
+import {CollectionPreviewContainer, CollectionItemTitle, CollectionItemPreview} from "./collection-preview.styles";
 
 const CollectionPreview = ({ title, items }) => {
     return (
-        <div className={'collection-preview'}>
-            <h1 className={'title'}>{title.toUpperCase()}</h1>
-            <div className={'preview'}>
+        <CollectionPreviewContainer>
+            <CollectionItemTitle>{title.toUpperCase()}</CollectionItemTitle>
+            <CollectionItemPreview>
                 {
                     items.filter((item, index) => index < 4).map((item) => {
                        return (
@@ -14,8 +14,8 @@ const CollectionPreview = ({ title, items }) => {
                        );
                     })
                 }
-            </div>
-        </div>
+            </CollectionItemPreview>
+        </CollectionPreviewContainer>
     );
 }
 

@@ -7,7 +7,7 @@ import {
     useStripe,
     useElements,
 } from '@stripe/react-stripe-js';
-import CustomButton from "../custom-button/custom-button.component";
+import CustomButton from "../../components/custom-button/custom-button.component";
 
 const CARD_OPTIONS = {
     iconStyle: 'solid',
@@ -207,9 +207,10 @@ const CheckoutDisplay = ({total}) => {
             />
 
             {error && <ErrorMessage>{error.message}</ErrorMessage>}
-            <CustomButton type="submit" error={error} disabled={processing || !stripe}>
+            <CustomButton type={'submit'} error={error} disabled={processing || !stripe}>
                 { processing ? 'Processing...' : `Pay $${total}` }
             </CustomButton>
+
             <div className={'test-payment-warning'}>
                 *When testing a payment, the card number must be...*
                 <br/>

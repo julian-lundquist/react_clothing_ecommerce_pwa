@@ -10,10 +10,6 @@ import {updateShopItems} from "../../redux/shop/shop.actions";
 
 
 class ShopPage extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const { match } = this.props;
 

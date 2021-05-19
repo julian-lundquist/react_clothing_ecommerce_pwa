@@ -11,7 +11,7 @@ export const selectShopItems = createSelector(
 export const selectShopItemsArray = createSelector(
     [selectShopItems],
     shopItems => shopItems ? Object.keys(shopItems).map(key => shopItems[key]) : []
-)
+);
 
 export const selectShopCategory = memoize((collectionUrlParam) =>
     createSelector(

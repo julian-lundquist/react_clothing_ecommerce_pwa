@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is hosted at [React Ecommerce PWA - People's Clothing](https://people-clothing-live.herokuapp.com/)
 
 ## Available Scripts
 

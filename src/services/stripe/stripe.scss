@@ -92,12 +92,13 @@ button {
 
 .PhoneNumberRow {
   width: 100%;
-  padding: 0 1vw 0 0;
+  padding: 0 3% 0 0;
 
   & input.form-control {
     color: #525dba;
     width: 100%;
     font-weight: bold;
+    font-size: 16px;
 
     &::placeholder {
       color: #9099a3;

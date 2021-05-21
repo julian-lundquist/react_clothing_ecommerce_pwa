@@ -55,9 +55,9 @@ const Field = ({
             label.toLowerCase() == 'phone' ? (
                 <div className={'PhoneNumberRow'}>
                     <PhoneInput
-                        // country={'us'}
+                        country={'us'}
                         preferredCountries={['us', 'ca', 'au', 'cn']}
-                        countryCodeEditable={false}
+                        disableCountryCode={true}
                         style={{ display: 'flex' }}
                         className={'FormRowInput'}
                         id={id}
@@ -71,6 +71,15 @@ const Field = ({
                             name: 'phone',
                             required: true,
                             autoFocus: false
+                        }}
+                        isValid={(value, country) => {
+                            if (value.match(/12345/)) {
+                                return 'Invalid value: '+value+', '+country.name;
+                            } else if (value.match(/1234/)) {
+                                return false;
+                            } else {
+                                return true;
+                            }
                         }}
                     />
                 </div>
@@ -218,7 +227,7 @@ const CheckoutDisplay = ({total}) => {
                         label={'Phone'}
                         id={'phone'}
                         type={'tel'}
-                        placeholder={'+1 (456) 789-0123'}
+                        placeholder={'(456) 789-0123'}
                         required
                         autoComplete={'tel'}
                         value={billingDetails.phone}

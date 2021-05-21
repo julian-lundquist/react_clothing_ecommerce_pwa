@@ -57,6 +57,7 @@ const Field = ({
                     <PhoneInput
                         country={'us'}
                         preferredCountries={['us', 'ca', 'au', 'cn']}
+                        disableDropdown={true}
                         disableCountryCode={true}
                         style={{ display: 'flex' }}
                         className={'FormRowInput'}
@@ -227,11 +228,12 @@ const CheckoutDisplay = ({total}) => {
                         label={'Phone'}
                         id={'phone'}
                         type={'tel'}
-                        placeholder={'(456) 789-0123'}
+                        placeholder={'(312) 231-1233'}
                         required
                         autoComplete={'tel'}
                         value={billingDetails.phone}
                         onChange={(e) => {
+                            console.log(e)
                             setBillingDetails({...billingDetails, phone: e});
                         }}
                     />

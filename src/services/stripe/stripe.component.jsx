@@ -198,46 +198,44 @@ const CheckoutDisplay = ({total}) => {
         </div>
     ) : (
         <form className="Form" onSubmit={handleSubmit}>
-            <div>
-                <fieldset className={'FormGroup'}>
-                    <Field
-                        label="Name"
-                        id="name"
-                        type="text"
-                        placeholder="John Doe"
-                        required
-                        autoComplete="name"
-                        value={billingDetails.name}
-                        onChange={(e) => {
-                            setBillingDetails({...billingDetails, name: e.target.value});
-                        }}
-                    />
-                    <Field
-                        label="Email"
-                        id="email"
-                        type="email"
-                        placeholder="example@gmail.com"
-                        required
-                        autoComplete="email"
-                        value={billingDetails.email}
-                        onChange={(e) => {
-                            setBillingDetails({...billingDetails, email: e.target.value});
-                        }}
-                    />
-                    <Field
-                        label={'Phone'}
-                        id={'phone'}
-                        type={'tel'}
-                        placeholder={'(312) 231-1233'}
-                        required
-                        autoComplete={'tel'}
-                        value={billingDetails.phone}
-                        onChange={(e) => {
-                            setBillingDetails({...billingDetails, phone: e});
-                        }}
-                    />
-                </fieldset>
-            </div>
+            <fieldset className={'FormGroup'}>
+                <Field
+                    label="Name"
+                    id="name"
+                    type="text"
+                    placeholder="John Doe"
+                    required
+                    autoComplete="name"
+                    value={billingDetails.name}
+                    onChange={(e) => {
+                        setBillingDetails({...billingDetails, name: e.target.value});
+                    }}
+                />
+                <Field
+                    label="Email"
+                    id="email"
+                    type="email"
+                    placeholder="example@gmail.com"
+                    required
+                    autoComplete="email"
+                    value={billingDetails.email}
+                    onChange={(e) => {
+                        setBillingDetails({...billingDetails, email: e.target.value});
+                    }}
+                />
+                <Field
+                    label={'Phone'}
+                    id={'phone'}
+                    type={'tel'}
+                    placeholder={'(312) 231-1233'}
+                    required
+                    autoComplete={'tel'}
+                    value={billingDetails.phone}
+                    onChange={(e) => {
+                        setBillingDetails({...billingDetails, phone: e});
+                    }}
+                />
+            </fieldset>
 
             <CardElement
                 className={'stripe-inputs'}

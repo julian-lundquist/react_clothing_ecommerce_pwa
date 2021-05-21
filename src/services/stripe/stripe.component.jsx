@@ -47,14 +47,6 @@ const Field = ({
                    onChange,
                }) => (
     <div className={'FormRow'}>
-        {/*{*/}
-        {/*    label.toLowerCase() !== 'phone' ? (*/}
-        {/*        <label htmlFor={id} className="FormRowLabel">*/}
-        {/*            {label}*/}
-        {/*        </label>*/}
-        {/*    ) : ('')*/}
-        {/*}*/}
-
         <label htmlFor={id} className="FormRowLabel">
             {label}
         </label>

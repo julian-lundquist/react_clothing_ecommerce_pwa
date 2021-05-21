@@ -233,7 +233,6 @@ const CheckoutDisplay = ({total}) => {
                         autoComplete={'tel'}
                         value={billingDetails.phone}
                         onChange={(e) => {
-                            console.log(e)
                             setBillingDetails({...billingDetails, phone: e});
                         }}
                     />

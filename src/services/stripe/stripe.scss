@@ -49,7 +49,7 @@ button {
   padding: 0;
   border-style: none;
   //background-color: #7795f8;
-  will-change: opacity, transform;
+  //will-change: opacity, transform;
   box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08),
   inset 0 2px 0 #1898ed;
   border-radius: 4px;
@@ -84,18 +84,27 @@ button {
   }
 }
 .FormRowInput:-webkit-autofill {
-  -webkit-text-fill-color: #525dba;
+  -webkit-text-fill-color: #8592ff;
   /* Hack to hide the default webkit autofill */
   transition: background-color 100000000s;
   animation: 1ms void-animation-out;
+}
+
+.PhoneNumberRow {
+  width: 100%;
+  padding: 0 1vw 0 0;
+
+  & input.form-control {
+    width: 100%;
+  }
 }
 
 .FormRowInput {
   font-size: 16px;
   width: 100%;
   font-weight: bold;
-  padding: 11px 15px 11px 0;
-  color: #424770;
+  //padding: 11px 15px 11px 0;
+  color: #525dba;
   background-color: transparent;
   animation: 1ms void-animation-out;
 }

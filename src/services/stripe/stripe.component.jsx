@@ -9,6 +9,9 @@ import {
 } from '@stripe/react-stripe-js';
 import CustomButton from "../../components/custom-button/custom-button.component";
 
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+
 const CARD_OPTIONS = {
     iconStyle: 'solid',
     style: {
@@ -43,20 +46,55 @@ const Field = ({
                    value,
                    onChange,
                }) => (
-    <div className="FormRow">
+    <div className={'FormRow'}>
+        {/*{*/}
+        {/*    label.toLowerCase() !== 'phone' ? (*/}
+        {/*        <label htmlFor={id} className="FormRowLabel">*/}
+        {/*            {label}*/}
+        {/*        </label>*/}
+        {/*    ) : ('')*/}
+        {/*}*/}
+
         <label htmlFor={id} className="FormRowLabel">
             {label}
         </label>
-        <input
-            className="FormRowInput"
-            id={id}
-            type={type}
-            placeholder={placeholder}
-            required={required}
-            autoComplete={autoComplete}
-            value={value}
-            onChange={onChange}
-        />
+
+        {
+            label.toLowerCase() == 'phone' ? (
+                <div className={'PhoneNumberRow'}>
+                    <PhoneInput
+                        // country={'us'}
+                        preferredCountries={['us', 'ca', 'au', 'cn']}
+                        countryCodeEditable={false}
+                        style={{ display: 'flex' }}
+                        className={'FormRowInput'}
+                        id={id}
+                        type={type}
+                        placeholder={placeholder}
+                        required={required}
+                        autoComplete={autoComplete}
+                        value={value}
+                        onChange={onChange}
+                        inputProps={{
+                            name: 'phone',
+                            required: true,
+                            autoFocus: false
+                        }}
+                    />
+                </div>
+            ) : (
+                <input
+                    className={'FormRowInput'}
+                    id={id}
+                    type={type}
+                    placeholder={placeholder}
+                    required={required}
+                    autoComplete={autoComplete}
+                    value={value}
+                    onChange={onChange}
+                />
+            )
+        }
     </div>
 );
 
@@ -158,44 +196,46 @@ const CheckoutDisplay = ({total}) => {
         </div>
     ) : (
         <form className="Form" onSubmit={handleSubmit}>
-            <fieldset className="FormGroup">
-                <Field
-                    label="Name"
-                    id="name"
-                    type="text"
-                    placeholder="John Doe"
-                    required
-                    autoComplete="name"
-                    value={billingDetails.name}
-                    onChange={(e) => {
-                        setBillingDetails({...billingDetails, name: e.target.value});
-                    }}
-                />
-                <Field
-                    label="Email"
-                    id="email"
-                    type="email"
-                    placeholder="example@gmail.com"
-                    required
-                    autoComplete="email"
-                    value={billingDetails.email}
-                    onChange={(e) => {
-                        setBillingDetails({...billingDetails, email: e.target.value});
-                    }}
-                />
-                <Field
-                    label="Phone"
-                    id="phone"
-                    type="tel"
-                    placeholder="(456) 789-0123"
-                    required
-                    autoComplete="tel"
-                    value={billingDetails.phone}
-                    onChange={(e) => {
-                        setBillingDetails({...billingDetails, phone: e.target.value});
-                    }}
-                />
-            </fieldset>
+            <div>
+                <fieldset className={'FormGroup'}>
+                    <Field
+                        label="Name"
+                        id="name"
+                        type="text"
+                        placeholder="John Doe"
+                        required
+                        autoComplete="name"
+                        value={billingDetails.name}
+                        onChange={(e) => {
+                            setBillingDetails({...billingDetails, name: e.target.value});
+                        }}
+                    />
+                    <Field
+                        label="Email"
+                        id="email"
+                        type="email"
+                        placeholder="example@gmail.com"
+                        required
+                        autoComplete="email"
+                        value={billingDetails.email}
+                        onChange={(e) => {
+                            setBillingDetails({...billingDetails, email: e.target.value});
+                        }}
+                    />
+                    <Field
+                        label={'Phone'}
+                        id={'phone'}
+                        type={'tel'}
+                        placeholder={'+1 (456) 789-0123'}
+                        required
+                        autoComplete={'tel'}
+                        value={billingDetails.phone}
+                        onChange={(e) => {
+                            setBillingDetails({...billingDetails, phone: e});
+                        }}
+                    />
+                </fieldset>
+            </div>
 
             <CardElement
                 className={'stripe-inputs'}
@@ -222,7 +262,7 @@ const CheckoutDisplay = ({total}) => {
             </div>
         </form>
     );
-};
+}
 
 const ELEMENTS_OPTIONS = {
     fonts: [

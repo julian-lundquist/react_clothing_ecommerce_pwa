@@ -1,15 +1,28 @@
 import ShopActionTypes from "./shop.types";
 
 const INITIAL_STATE = {
-    shopItems: null
+    shopItems: null,
+    isFetching: false
 }
 
 const shopReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case ShopActionTypes.UPDATE_SHOP_ITEMS:
+        case ShopActionTypes.FETCH_SHOP_ITEMS_START:
             return {
                 ...state,
+                isFetching: true
+            }
+        case ShopActionTypes.FETCH_SHOP_ITEMS_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
                 shopItems: action.payload
+            }
+        case ShopActionTypes.FETCH_SHOP_ITEMS_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.payload
             }
         default:
             return state

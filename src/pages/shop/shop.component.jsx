@@ -7,15 +7,15 @@ import { connect } from "react-redux";
 import {ShopPageContainer} from "./shop.styles";
 import LoadingSpinner from "../../components/loading-spinner/loading-spinner.component";
 import {createStructuredSelector} from "reselect";
-import { fetchShopItemsStartAsync } from "../../redux/shop/shop.actions";
+import { fetchShopItemsStart } from "../../redux/shop/shop.actions";
 import {selectIsShopFetching, selectIsShopItemsLoaded} from "../../redux/shop/shop.selectors";
 import CollectionOverviewContainer from "../../components/collection-overview/collection-overview.container";
 import CollectionPageContainer from "../collection/collection.container";
 
 class ShopPage extends React.Component {
     componentDidMount() {
-        const { fetchShopItemsStartAsync } = this.props;
-        fetchShopItemsStartAsync();
+        const { fetchShopItemsStart } = this.props;
+        fetchShopItemsStart();
     }
 
     render() {
@@ -31,7 +31,7 @@ class ShopPage extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    fetchShopItemsStartAsync: () => dispatch(fetchShopItemsStartAsync())
+    fetchShopItemsStart: () => dispatch(fetchShopItemsStart())
 });
 
 export default connect(null, mapDispatchToProps)(ShopPage);

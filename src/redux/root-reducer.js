@@ -7,6 +7,8 @@ import cartReducer from "./cart/cart.reducer";
 import menuDirectoryReducer from "./menu-directory/menu-directory.reducer";
 import shopReducer from "./shop/shop.reducer";
 
+// storage.removeItem('persist:root');
+
 const persistConfig = {
     key: 'root',
     storage,

@@ -1,5 +1,5 @@
 import ShopActionTypes from "./shop.types";
-import {call, takeLatest, put} from "@redux-saga/core/effects";
+import {call, takeLatest, put, all} from "@redux-saga/core/effects";
 import {convertShopItemsSnapshotToMap, firestore} from "../../firebase/firebase.utils";
 import {fetchShopItemsFailure, fetchShopItemsSuccess} from "./shop.actions";
 
@@ -16,4 +16,10 @@ export function* fetchShopItemsAsync() {
     } catch (e) {
         yield put(fetchShopItemsFailure(e.message));
     }
+}
+
+export function* shopSagas() {
+    yield all([
+        call(fetchShopItemsStart)
+    ]);
 }

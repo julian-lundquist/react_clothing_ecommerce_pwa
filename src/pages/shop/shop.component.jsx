@@ -11,23 +11,19 @@ import { fetchShopItemsStart } from "../../redux/shop/shop.actions";
 import {selectIsShopFetching, selectIsShopItemsLoaded} from "../../redux/shop/shop.selectors";
 import CollectionOverviewContainer from "../../components/collection-overview/collection-overview.container";
 import CollectionPageContainer from "../collection/collection.container";
+import {useEffect} from "react";
 
-class ShopPage extends React.Component {
-    componentDidMount() {
-        const { fetchShopItemsStart } = this.props;
+const ShopPage = ({ fetchShopItemsStart, match }) => {
+    useEffect(() => {
         fetchShopItemsStart();
-    }
+    }, [fetchShopItemsStart]);
 
-    render() {
-        const { match } = this.props;
-
-        return (
-            <ShopPageContainer>
-                <Route exact path={`${match.path}`} component={CollectionOverviewContainer} />
-                <Route path={`${match.path}/:categoryId`} component={CollectionPageContainer} />
-            </ShopPageContainer>
-        );
-    }
+    return (
+        <ShopPageContainer>
+            <Route exact path={`${match.path}`} component={CollectionOverviewContainer} />
+            <Route path={`${match.path}/:categoryId`} component={CollectionPageContainer} />
+        </ShopPageContainer>
+    );
 }
 
 const mapDispatchToProps = dispatch => ({

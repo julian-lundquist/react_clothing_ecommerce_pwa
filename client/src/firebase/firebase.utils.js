@@ -2,17 +2,16 @@ import firebase from "firebase/app";
 import 'firebase/firestore';
 import 'firebase/auth';
 
-const config = {
-    apiKey: "AIzaSyDeoUBiXrBIT3lYvbkOnwHUMI0AiWT6ny8",
-    authDomain: "ecommerce-test-d3ba8.firebaseapp.com",
-    projectId: "ecommerce-test-d3ba8",
-    storageBucket: "ecommerce-test-d3ba8.appspot.com",
-    messagingSenderId: "68886513636",
-    appId: "1:68886513636:web:d3b65df9e71dc8b54a29f1",
-    measurementId: "G-JBEK09113X"
+const firebaseConfig = {
+    apiKey: "AIzaSyCCArM2f2RljKCpiuKu7YXvBomVHiidgAw",
+    authDomain: "people-s-clothing-test.firebaseapp.com",
+    projectId: "people-s-clothing-test",
+    storageBucket: "people-s-clothing-test.appspot.com",
+    messagingSenderId: "738795915572",
+    appId: "1:738795915572:web:c4c4240c8a4c1ab4de3d61"
 };
 
-firebase.initializeApp(config);
+firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();

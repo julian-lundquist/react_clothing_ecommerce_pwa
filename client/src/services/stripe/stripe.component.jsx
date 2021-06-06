@@ -1,6 +1,8 @@
 import './stripe.scss';
 import React, {useState} from 'react';
 import {loadStripe} from '@stripe/stripe-js';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import {
     CardElement,
     Elements,
@@ -9,8 +11,9 @@ import {
 } from '@stripe/react-stripe-js';
 import CustomButton from "../../components/custom-button/custom-button.component";
 
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
+import axios from "axios";
+
+axios.defaults.baseURL = 'http://localhost:5000';
 
 const CARD_OPTIONS = {
     iconStyle: 'solid',
@@ -33,7 +36,7 @@ const CARD_OPTIONS = {
             iconColor: '#9e2146',
             color: '#9e2146',
         },
-    },
+    }
 };
 
 const Field = ({
@@ -140,6 +143,38 @@ const CheckoutDisplay = ({total}) => {
         name: '',
     });
 
+    const processTransaction = async () => {
+        // await stripe.createPaymentMethod({
+        //     type: 'card',
+        //     card: elements.getElement(CardElement),
+        //     billing_details: billingDetails,
+        // }).then(result => {
+        //     if (result.error) {
+        //         setError(result.error);
+        //     } else {
+        //         console.log(result.paymentMethod);
+        //         console.log(total)
+        //         setPaymentMethod(result.paymentMethod);
+        //     }
+        // });
+
+
+        await stripe.createToken(elements.getElement(CardElement)).then((result) => {
+            if (result.error) {
+                setError(result.error);
+            } else {
+                let token = result.token;
+                console.log(token);
+                axios.post('/payment',{
+                    amount: total * 100,
+                    token
+                }).then(res => {
+                    console.log(res);
+                })
+            }
+        });
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -158,20 +193,9 @@ const CheckoutDisplay = ({total}) => {
             setProcessing(true);
         }
 
-        const payload = await stripe.createPaymentMethod({
-            type: 'card',
-            card: elements.getElement(CardElement),
-            billing_details: billingDetails,
-        });
+        await processTransaction();
 
-        setProcessing(false);
-        console.log(payload)
-
-        if (payload.error) {
-            setError(payload.error);
-        } else {
-            setPaymentMethod(payload.paymentMethod);
-        }
+        await setProcessing(false);
     };
 
     const reset = () => {

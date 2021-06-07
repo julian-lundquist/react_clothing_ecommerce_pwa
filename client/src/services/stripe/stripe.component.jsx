@@ -1,4 +1,6 @@
 import './stripe.scss';
+import { ReactComponent as LeftArrowIcon } from '../../assets/arrow-left-solid.svg';
+import { ReactComponent as RightArrowIcon } from '../../assets/arrow-right-solid.svg';
 import React, {useState} from 'react';
 import {loadStripe} from '@stripe/stripe-js';
 import PhoneInput from 'react-phone-input-2';
@@ -137,6 +139,7 @@ const CheckoutDisplay = ({total}) => {
     const [cardComplete, setCardComplete] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState(null);
+    const [viewingShippingFields, setViewingShippingFields] = useState(true);
     const [billingSameAsShipping, setBillingSameAsShipping] = useState(false);
     const [customerDetails, setCustomerDetails] = useState(null);
     const [chargeDetails, setChargeDetails] = useState(null);
@@ -144,6 +147,14 @@ const CheckoutDisplay = ({total}) => {
         email: '',
         phone: '',
         name: '',
+    });
+    const [shippingAddressDetails, setShippingAddressDetails] = useState({
+        line1: '',
+        line2: '',
+        city: '',
+        state: '',
+        postal_code: '',
+        country: 'US'
     });
     const [billingAddressDetails, setBillingAddressDetails] = useState({
         line1: '',
@@ -237,6 +248,40 @@ const CheckoutDisplay = ({total}) => {
         await processTransaction();
     };
 
+    const shippingHandleSubmit = (event) => {
+        event.preventDefault();
+
+        if (!stripe || !elements) {
+            // Stripe.js has not loaded yet. Make sure to disable
+            // form submission until Stripe.js has loaded.
+            return;
+        }
+
+        if (error) {
+            elements.getElement('card').focus();
+            return;
+        }
+
+        setViewingShippingFields(false);
+    };
+
+    const billingSameAsShippingHandleChange = async (event) => {
+        await setBillingSameAsShipping(!billingSameAsShipping);
+
+        if (event.target.value === 'true') {
+            setBillingAddressDetails(shippingAddressDetails);
+        } else {
+            setBillingAddressDetails({
+                line1: '',
+                line2: '',
+                city: '',
+                state: '',
+                postal_code: '',
+                country: 'US'
+            });
+        }
+    };
+
     const reset = () => {
         setError(null);
         setProcessing(false);
@@ -248,6 +293,14 @@ const CheckoutDisplay = ({total}) => {
             phone: '',
             name: ''
         });
+        setShippingAddressDetails({
+            line1: '',
+            line2: '',
+            city: '',
+            state: '',
+            postal_code: '',
+            country: 'US'
+        });
         setBillingAddressDetails({
             line1: '',
             line2: '',
@@ -255,7 +308,7 @@ const CheckoutDisplay = ({total}) => {
             state: '',
             postal_code: '',
             country: 'US'
-        })
+        });
     };
 
     return (customerDetails && chargeDetails) ? (
@@ -277,146 +330,220 @@ const CheckoutDisplay = ({total}) => {
             <ResetButton onClick={reset} />
         </div>
     ) : (
-        <form className="Form" onSubmit={handleSubmit}>
-            <h3 className={'FormGroupHeader'}>Card Details</h3>
+        (viewingShippingFields) ? (
+            <form className={'Form'} onSubmit={shippingHandleSubmit}>
+                <h3 className={'FormGroupHeader'}>Customer Info</h3>
 
-            <fieldset className={'FormGroup'}>
-                <Field
-                    label="Name"
-                    id="name"
-                    type="text"
-                    placeholder="John Doe"
-                    required
-                    autoComplete="name"
-                    value={billingDetails.name}
-                    onChange={(e) => {
-                        setBillingDetails({...billingDetails, name: e.target.value});
-                    }}
-                />
-                <Field
-                    label="Email"
-                    id="email"
-                    type="email"
-                    placeholder="email@example.com"
-                    required
-                    autoComplete="email"
-                    value={billingDetails.email}
-                    onChange={(e) => {
-                        setBillingDetails({...billingDetails, email: e.target.value});
-                    }}
-                />
-                <Field
-                    label={'Phone'}
-                    id={'phone'}
-                    type={'tel'}
-                    placeholder={'(312) 231-1233'}
-                    required
-                    autoComplete={'tel'}
-                    value={billingDetails.phone}
-                    onChange={(e) => {
-                        setBillingDetails({...billingDetails, phone: e});
-                    }}
-                />
-            </fieldset>
+                <fieldset className={'FormGroup'}>
+                    <Field
+                        label="Name"
+                        id="name"
+                        type="text"
+                        placeholder="John Doe"
+                        required
+                        autoComplete="name"
+                        value={billingDetails.name}
+                        onChange={(e) => {
+                            setBillingDetails({...billingDetails, name: e.target.value});
+                        }}
+                    />
+                    <Field
+                        label="Email"
+                        id="email"
+                        type="email"
+                        placeholder="email@example.com"
+                        required
+                        autoComplete="email"
+                        value={billingDetails.email}
+                        onChange={(e) => {
+                            setBillingDetails({...billingDetails, email: e.target.value});
+                        }}
+                    />
+                    <Field
+                        label={'Phone'}
+                        id={'phone'}
+                        type={'tel'}
+                        placeholder={'(312) 231-1233'}
+                        required
+                        autoComplete={'tel'}
+                        value={billingDetails.phone}
+                        onChange={(e) => {
+                            setBillingDetails({...billingDetails, phone: e});
+                        }}
+                    />
+                </fieldset>
 
-            <h3 className={'FormGroupHeader'} style={{ marginBottom: 0 }}>Billing Address</h3>
+                <h3 className={'FormGroupHeader'}>Shipping Address</h3>
 
-            <div className={'SameAsShipCheckbox'}>
-                <input type="checkbox" id="billingSameAsShipping" name="billingSameAsShipping" value={billingSameAsShipping}
-                       onChange={(e) => {
-                           setBillingSameAsShipping(!billingSameAsShipping);
-                       }}
-                />
-                <label htmlFor="billingSameAsShipping" style={{ userSelect: "none", fontSize: '22px' }}> Same as Shipping</label>
-                <br/>
-            </div>
+                <fieldset className={'FormGroup'}>
+                    <Field
+                        label="Address 1"
+                        id="address1-ship"
+                        type="text"
+                        placeholder="123 Example St"
+                        required
+                        autoComplete="address1"
+                        value={shippingAddressDetails.line1}
+                        onChange={(e) => {
+                            setShippingAddressDetails({...shippingAddressDetails, line1: e.target.value});
+                        }}
+                    />
+                    <Field
+                        label="Address 2"
+                        id="address2-ship"
+                        type="text"
+                        placeholder="Unit #213"
+                        autoComplete="address2"
+                        value={shippingAddressDetails.line2}
+                        onChange={(e) => {
+                            setShippingAddressDetails({...shippingAddressDetails, line2: e.target.value});
+                        }}
+                    />
+                    <Field
+                        label="City"
+                        id="city-ship"
+                        type="text"
+                        placeholder="City"
+                        required
+                        autoComplete="city"
+                        value={shippingAddressDetails.city}
+                        onChange={(e) => {
+                            setShippingAddressDetails({...shippingAddressDetails, city: e.target.value });
+                        }}
+                    />
+                    <Field
+                        label="State"
+                        id="state-ship"
+                        type="text"
+                        placeholder="State"
+                        required
+                        autoComplete="state"
+                        value={shippingAddressDetails.state}
+                        onChange={(e) => {
+                            setShippingAddressDetails({...shippingAddressDetails, state: e.target.value});
+                        }}
+                    />
+                    <Field
+                        label="Zip Code"
+                        id="postal_code-ship"
+                        type="text"
+                        placeholder="11324"
+                        required
+                        autoComplete="postal_code"
+                        value={shippingAddressDetails.postal_code}
+                        onChange={(e) => {
+                            setShippingAddressDetails({...shippingAddressDetails, postal_code: e.target.value});
+                        }}
+                    />
+                </fieldset>
 
-            <fieldset className={'FormGroup'}>
-                <Field
-                    label="Address 1"
-                    id="address1"
-                    type="text"
-                    placeholder="123 Example St"
-                    required
-                    autoComplete="address1"
-                    value={billingAddressDetails.line1}
-                    onChange={(e) => {
-                        setBillingAddressDetails({...billingAddressDetails, line1: e.target.value});
+                <CustomButton type={'submit'} disabled={processing || !stripe}>Next <RightArrowIcon className={'RightArrowIcon'} /></CustomButton>
+            </form>
+        ) : (
+            <form className="Form" onSubmit={handleSubmit}>
+                <CustomButton type={'button'} onClick={() => setViewingShippingFields(true)} disabled={processing || !stripe}><LeftArrowIcon className={'LeftArrowIcon'} /> Back to Shipping</CustomButton>
+
+                <h3 className={'FormGroupHeader'} style={{ marginBottom: 0 }}>Billing Address</h3>
+
+                <div className={'SameAsShipCheckbox'}>
+                    <input type="checkbox" id="billingSameAsShipping" name="billingSameAsShipping" defaultChecked={billingSameAsShipping} value={billingSameAsShipping}
+                           onChange={(e) => {
+                               billingSameAsShippingHandleChange(e);
+                           }}
+                    />
+                    <label htmlFor="billingSameAsShipping" style={{ userSelect: "none", fontSize: '22px' }}> Same as Shipping</label>
+                    <br/>
+                </div>
+
+                <fieldset className={'FormGroup'}>
+                    <Field
+                        label="Address 1"
+                        id="address1"
+                        type="text"
+                        placeholder="123 Example St"
+                        required
+                        autoComplete="address1"
+                        value={billingAddressDetails.line1}
+                        onChange={(e) => {
+                            setBillingAddressDetails({...billingAddressDetails, line1: e.target.value});
+                        }}
+                    />
+                    <Field
+                        label="Address 2"
+                        id="address2"
+                        type="text"
+                        placeholder="Unit #213"
+                        autoComplete="address2"
+                        value={billingAddressDetails.line2}
+                        onChange={(e) => {
+                            setBillingAddressDetails({...billingAddressDetails, line2: e.target.value});
+                        }}
+                    />
+                    <Field
+                        label="City"
+                        id="city"
+                        type="text"
+                        placeholder="City"
+                        required
+                        autoComplete="city"
+                        value={billingAddressDetails.city}
+                        onChange={(e) => {
+                            setBillingAddressDetails({...billingAddressDetails, city: e.target.value });
+                        }}
+                    />
+                    <Field
+                        label="State"
+                        id="state"
+                        type="text"
+                        placeholder="State"
+                        required
+                        autoComplete="state"
+                        value={billingAddressDetails.state}
+                        onChange={(e) => {
+                            setBillingAddressDetails({...billingAddressDetails, state: e.target.value});
+                        }}
+                    />
+                    <Field
+                        label="Zip Code"
+                        id="postal_code"
+                        type="text"
+                        placeholder="11324"
+                        required
+                        autoComplete="postal_code"
+                        value={billingAddressDetails.postal_code}
+                        onChange={(e) => {
+                            setBillingAddressDetails({...billingAddressDetails, postal_code: e.target.value});
+                        }}
+                    />
+                </fieldset>
+
+                <h3 className={'FormGroupHeader'}>Card Details</h3>
+
+                <CardElement
+                    className={'stripe-inputs'}
+                    options={CARD_OPTIONS}
+                    onChange={e => {
+                        setError(e.error)
+                        setCardComplete(e.complete)
                     }}
                 />
-                <Field
-                    label="Address 2"
-                    id="address2"
-                    type="text"
-                    placeholder="Unit #213"
-                    autoComplete="address2"
-                    value={billingAddressDetails.line2}
-                    onChange={(e) => {
-                        setBillingAddressDetails({...billingAddressDetails, line2: e.target.value});
-                    }}
-                />
-                <Field
-                    label="City"
-                    id="city"
-                    type="text"
-                    placeholder="City"
-                    required
-                    autoComplete="city"
-                    value={billingAddressDetails.city}
-                    onChange={(e) => {
-                        setBillingAddressDetails({...billingAddressDetails, city: e.target.value });
-                    }}
-                />
-                <Field
-                    label="State"
-                    id="state"
-                    type="text"
-                    placeholder="State"
-                    required
-                    autoComplete="state"
-                    value={billingAddressDetails.state}
-                    onChange={(e) => {
-                        setBillingAddressDetails({...billingAddressDetails, state: e.target.value});
-                    }}
-                />
-                <Field
-                    label="Zip Code"
-                    id="postal_code"
-                    type="text"
-                    placeholder="11324"
-                    required
-                    autoComplete="postal_code"
-                    value={billingAddressDetails.postal_code}
-                    onChange={(e) => {
-                        setBillingAddressDetails({...billingAddressDetails, postal_code: e.target.value});
-                    }}
-                />
-            </fieldset>
 
-            <CardElement
-                className={'stripe-inputs'}
-                options={CARD_OPTIONS}
-                onChange={e => {
-                    setError(e.error)
-                    setCardComplete(e.complete)
-                }}
-            />
+                {error && <ErrorMessage>{error.message}</ErrorMessage>}
+                <CustomButton type={'submit'} error={error} disabled={processing || !stripe}>
+                    { processing ? 'Processing...' : `Pay $${total}` }
+                </CustomButton>
 
-            {error && <ErrorMessage>{error.message}</ErrorMessage>}
-            <CustomButton type={'submit'} error={error} disabled={processing || !stripe}>
-                { processing ? 'Processing...' : `Pay $${total}` }
-            </CustomButton>
-
-            <div className={'test-payment-warning'}>
-                *When testing a payment, the card number must be...*
-                <br/>
-                Card: 4242 4242 4242 4242
-                <br/>
-                Exp: Any valid date
-                <br/>
-                CVV: Any
-            </div>
-        </form>
+                <div className={'test-payment-warning'}>
+                    *When testing a payment, the card number must be...*
+                    <br/>
+                    Card: 4242 4242 4242 4242
+                    <br/>
+                    Exp: Any valid date
+                    <br/>
+                    CVV: Any
+                </div>
+            </form>
+        )
     );
 }
 

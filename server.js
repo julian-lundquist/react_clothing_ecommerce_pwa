@@ -47,33 +47,40 @@ app.post('/payment',async (req, res) => {
         token: req.body.token
     }
 
-    const customer = await stripe.customers.create({
-        address: body.address,
-        description: body.name + ' Test Customer (created for API docs)',
-        email: body.email,
-        name: body.name,
-        phone: body.phone,
-        shipping: {
+    try {
+        const customer = await stripe.customers.create({
             address: body.address,
+            description: body.name + ' Test Customer (created for API docs)',
+            email: body.email,
             name: body.name,
-            phone: body.phone
-        }
-    });
+            phone: body.phone,
+            shipping: {
+                address: body.address,
+                name: body.name,
+                phone: body.phone
+            }
+        });
 
-    await stripe.customers.createSource(
-        customer?.id,
-        {source: body.token.id}
-    );
+        // attaches token which contains card details to the customer as default payment method
+        await stripe.customers.createSource(
+            customer?.id,
+            { source: body.token.id }
+        );
 
-    const charge = await stripe.charges.create({
-        amount: body.totalPrice,
-        currency: 'usd',
-        customer: customer?.id,
-        // source: 'tok_amex',
-        description: 'My First Test Charge (created for API docs)',
-    });
+        const charge = await stripe.charges.create({
+            amount: body.totalPrice,
+            currency: 'usd',
+            customer: customer?.id,
+            // source: 'tok_amex',
+            description: 'My First Test Charge (created for API docs)',
+        });
 
-    console.log(charge);
+        // console.log(charge);
+
+        res.status(200).send({ success: { customer, charge } });
+    } catch (e) {
+        res.status(500).send({ error: e })
+    }
 
     // const session = await stripe.checkout.sessions.create({
     //     success_url: 'https://localhost/success',

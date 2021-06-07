@@ -8,7 +8,7 @@ export const HeaderContainer = styled.div`
     display: flex;
     justify-content: center;
     //margin-bottom: 25px;
-    background-color: burlywood;
+    background-color: #dead87;
 `;
 
 export const LogoContainer = styled(Link)`

@@ -137,6 +137,9 @@ const CheckoutDisplay = ({total}) => {
     const [cardComplete, setCardComplete] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState(null);
+    const [billingSameAsShipping, setBillingSameAsShipping] = useState(false);
+    const [customerDetails, setCustomerDetails] = useState(null);
+    const [chargeDetails, setChargeDetails] = useState(null);
     const [billingDetails, setBillingDetails] = useState({
         email: '',
         phone: '',
@@ -200,9 +203,12 @@ const CheckoutDisplay = ({total}) => {
                     totalPrice: total * 100,
                     token
                 }).then(res => {
+                    setProcessing(false);
                     if (res.data.error) {
                         console.log(res.data.error);
                     } else {
+                        setCustomerDetails(res.data.success.customer);
+                        setChargeDetails(res.data.success.charge);
                         console.log(res.data.success);
                     }
                 });
@@ -229,14 +235,14 @@ const CheckoutDisplay = ({total}) => {
         }
 
         await processTransaction();
-
-        await setProcessing(false);
     };
 
     const reset = () => {
         setError(null);
         setProcessing(false);
         setPaymentMethod(null);
+        setCustomerDetails(null);
+        setChargeDetails(null);
         setBillingDetails({
             email: '',
             phone: '',
@@ -249,22 +255,31 @@ const CheckoutDisplay = ({total}) => {
             state: '',
             postal_code: '',
             country: 'US'
-        });
+        })
     };
 
-    return paymentMethod ? (
+    return (customerDetails && chargeDetails) ? (
         <div className="Result">
             <div className="ResultTitle" role="alert">
                 Payment successful
             </div>
             <div className="ResultMessage">
-                Thanks for trying Stripe Elements. No money was charged, but we
-                generated a PaymentMethod: {paymentMethod.id}
+                <span className={'CheckoutSuccessMessage'}>Thanks for trying Stripe Elements. No money was charged, payment details below.</span>
+                <br/>
+                <span className={'CheckoutSuccessMessage'}>
+                    <span className={'CheckoutSuccessTitle'}>Stripe Customer Id:</span> {customerDetails.id}
+                </span>
+                <br/>
+                <span className={'CheckoutSuccessMessage'}>
+                    <span className={'CheckoutSuccessTitle'}>Stripe Charge Id:</span> {chargeDetails.id}
+                </span>
             </div>
             <ResetButton onClick={reset} />
         </div>
     ) : (
         <form className="Form" onSubmit={handleSubmit}>
+            <h3 className={'FormGroupHeader'}>Card Details</h3>
+
             <fieldset className={'FormGroup'}>
                 <Field
                     label="Name"
@@ -303,6 +318,18 @@ const CheckoutDisplay = ({total}) => {
                     }}
                 />
             </fieldset>
+
+            <h3 className={'FormGroupHeader'} style={{ marginBottom: 0 }}>Billing Address</h3>
+
+            <div className={'SameAsShipCheckbox'}>
+                <input type="checkbox" id="billingSameAsShipping" name="billingSameAsShipping" value={billingSameAsShipping}
+                       onChange={(e) => {
+                           setBillingSameAsShipping(!billingSameAsShipping);
+                       }}
+                />
+                <label htmlFor="billingSameAsShipping" style={{ userSelect: "none", fontSize: '22px' }}> Same as Shipping</label>
+                <br/>
+            </div>
 
             <fieldset className={'FormGroup'}>
                 <Field

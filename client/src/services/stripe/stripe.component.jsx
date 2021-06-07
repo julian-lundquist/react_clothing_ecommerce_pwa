@@ -142,22 +142,48 @@ const CheckoutDisplay = ({total}) => {
         phone: '',
         name: '',
     });
+    const [billingAddressDetails, setBillingAddressDetails] = useState({
+        line1: '',
+        line2: '',
+        city: '',
+        state: '',
+        postal_code: '',
+        country: 'US'
+    });
 
     const processTransaction = async () => {
         // await stripe.createPaymentMethod({
         //     type: 'card',
         //     card: elements.getElement(CardElement),
-        //     billing_details: billingDetails,
+        //     billing_details: {
+        //         address: billingAddressDetails,
+        //         name: billingDetails.name,
+        //         email: billingDetails.email,
+        //         phone: billingDetails.phone
+        //     },
         // }).then(result => {
         //     if (result.error) {
         //         setError(result.error);
         //     } else {
-        //         console.log(result.paymentMethod);
-        //         console.log(total)
         //         setPaymentMethod(result.paymentMethod);
+        //         console.log(result.paymentMethod);
+        //
+        //         axios.post('/payment',{
+        //             address: billingAddressDetails,
+        //             name: billingDetails.name,
+        //             email: billingDetails.email,
+        //             phone: billingDetails.phone,
+        //             amount: total * 100,
+        //             paymentMethod: result.paymentMethod
+        //         }).then(res => {
+        //             if (res.data.error) {
+        //                 console.log(res.data.error);
+        //             } else {
+        //                 console.log(res.data.success);
+        //             }
+        //         });
         //     }
         // });
-
 
         await stripe.createToken(elements.getElement(CardElement)).then((result) => {
             if (result.error) {
@@ -165,12 +191,21 @@ const CheckoutDisplay = ({total}) => {
             } else {
                 let token = result.token;
                 console.log(token);
+
                 axios.post('/payment',{
-                    amount: total * 100,
+                    address: billingAddressDetails,
+                    name: billingDetails.name,
+                    email: billingDetails.email,
+                    phone: billingDetails.phone,
+                    totalPrice: total * 100,
                     token
                 }).then(res => {
-                    console.log(res);
-                })
+                    if (res.data.error) {
+                        console.log(res.data.error);
+                    } else {
+                        console.log(res.data.success);
+                    }
+                });
             }
         });
     }
@@ -205,7 +240,15 @@ const CheckoutDisplay = ({total}) => {
         setBillingDetails({
             email: '',
             phone: '',
-            name: '',
+            name: ''
+        });
+        setBillingAddressDetails({
+            line1: '',
+            line2: '',
+            city: '',
+            state: '',
+            postal_code: '',
+            country: 'US'
         });
     };
 
@@ -239,7 +282,7 @@ const CheckoutDisplay = ({total}) => {
                     label="Email"
                     id="email"
                     type="email"
-                    placeholder="example@gmail.com"
+                    placeholder="email@example.com"
                     required
                     autoComplete="email"
                     value={billingDetails.email}
@@ -257,6 +300,68 @@ const CheckoutDisplay = ({total}) => {
                     value={billingDetails.phone}
                     onChange={(e) => {
                         setBillingDetails({...billingDetails, phone: e});
+                    }}
+                />
+            </fieldset>
+
+            <fieldset className={'FormGroup'}>
+                <Field
+                    label="Address 1"
+                    id="address1"
+                    type="text"
+                    placeholder="123 Example St"
+                    required
+                    autoComplete="address1"
+                    value={billingAddressDetails.line1}
+                    onChange={(e) => {
+                        setBillingAddressDetails({...billingAddressDetails, line1: e.target.value});
+                    }}
+                />
+                <Field
+                    label="Address 2"
+                    id="address2"
+                    type="text"
+                    placeholder="Unit #213"
+                    autoComplete="address2"
+                    value={billingAddressDetails.line2}
+                    onChange={(e) => {
+                        setBillingAddressDetails({...billingAddressDetails, line2: e.target.value});
+                    }}
+                />
+                <Field
+                    label="City"
+                    id="city"
+                    type="text"
+                    placeholder="City"
+                    required
+                    autoComplete="city"
+                    value={billingAddressDetails.city}
+                    onChange={(e) => {
+                        setBillingAddressDetails({...billingAddressDetails, city: e.target.value });
+                    }}
+                />
+                <Field
+                    label="State"
+                    id="state"
+                    type="text"
+                    placeholder="State"
+                    required
+                    autoComplete="state"
+                    value={billingAddressDetails.state}
+                    onChange={(e) => {
+                        setBillingAddressDetails({...billingAddressDetails, state: e.target.value});
+                    }}
+                />
+                <Field
+                    label="Zip Code"
+                    id="postal_code"
+                    type="text"
+                    placeholder="11324"
+                    required
+                    autoComplete="postal_code"
+                    value={billingAddressDetails.postal_code}
+                    onChange={(e) => {
+                        setBillingAddressDetails({...billingAddressDetails, postal_code: e.target.value});
                     }}
                 />
             </fieldset>

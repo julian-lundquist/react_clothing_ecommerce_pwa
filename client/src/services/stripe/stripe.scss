@@ -47,6 +47,7 @@ button {
 
 .FormGroup {
   padding: 0;
+  margin-bottom: 1em;
   border-style: none;
   //background-color: #7795f8;
   //will-change: opacity, transform;
@@ -68,10 +69,10 @@ button {
 }
 
 .FormRowLabel {
-  width: 15%;
+  width: 35%;
   min-width: 70px;
   padding: 11px 0;
-  font-size: 26px;
+  font-size: 24px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

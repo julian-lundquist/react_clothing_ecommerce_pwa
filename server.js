@@ -5,6 +5,7 @@ const path = require('path');
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
+console.log(process.env.STRIPE_SECRET_KEY)
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
@@ -36,17 +37,75 @@ app.listen(port, error => {
     console.log('Server running on this port ' + port);
 });
 
-app.post('/payment', (req, res) => {
+app.post('/payment',async (req, res) => {
     const body = {
-        amount: req.body.amount,
-        currency: 'usd'
+        address: req.body.address,
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.phone,
+        totalPrice: req.body.totalPrice,
+        token: req.body.token
     }
 
-    stripe.paymentIntents.create(body, (stripeErr, stripeRes) => {
-        if (stripeErr) {
-            res.status(500).send({ error: stripeErr });
-        } else {
-            res.status(200).send({ success: stripeRes });
+    const customer = await stripe.customers.create({
+        address: body.address,
+        description: body.name + ' Test Customer (created for API docs)',
+        email: body.email,
+        name: body.name,
+        phone: body.phone,
+        shipping: {
+            address: body.address,
+            name: body.name,
+            phone: body.phone
         }
     });
+
+    await stripe.customers.createSource(
+        customer?.id,
+        {source: body.token.id}
+    );
+
+    const charge = await stripe.charges.create({
+        amount: body.totalPrice,
+        currency: 'usd',
+        customer: customer?.id,
+        // source: 'tok_amex',
+        description: 'My First Test Charge (created for API docs)',
+    });
+
+    console.log(charge);
+
+    // const session = await stripe.checkout.sessions.create({
+    //     success_url: 'https://localhost/success',
+    //     cancel_url: 'https://localhost/cancel',
+    //     payment_method_types: ['card'],
+    //     line_items: [
+    //         {price: 'amount', quantity: 2},
+    //     ],
+    //     mode: 'payment',
+    //     // client_reference_id: customer?.id,
+    //     customer: customer?.id
+    // });
+    //
+    // console.log(session);
+
+    // await stripe.customers.createSource(
+    //     customer?.id,
+    //     {
+    //         source: body.token_id,
+    //     },
+    //     function(err, source) {
+    //         // asynchronously called
+    //         console.log(source)
+    //         console.log(customer)
+    //     }
+    // );
+
+    // stripe.paymentIntents.create(body, (stripeErr, stripeRes) => {
+    //     if (stripeErr) {
+    //         res.status(500).send({ error: stripeErr });
+    //     } else {
+    //         res.status(200).send({ success: stripeRes });
+    //     }
+    // });
 });

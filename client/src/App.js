@@ -4,6 +4,7 @@ import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import AuthenticationPage from "./pages/authentication/authentication.component";
+import ContactPage from "./pages/contact/contact.component";
 
 import {Redirect, Route, Switch} from "react-router";
 import { connect } from "react-redux";
@@ -25,6 +26,7 @@ const App = ({ checkUserSession, currentUser }) => {
                 <Route exact path={'/'} component={HomePage} />
                 <Route path={'/shop'} component={ShopPage} />
                 <Route path={'/checkout'} component={CheckoutPage} />
+                <Route path={'/contact'} component={ContactPage} />
                 <Route exact path={'/signin'} render={() => currentUser ? (<Redirect to={'/'} />) : <AuthenticationPage/>} />
             </Switch>
         </div>

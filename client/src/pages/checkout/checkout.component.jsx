@@ -3,6 +3,7 @@ import {selectCartItems, selectCartTotalPrice} from "../../redux/cart/cart.selec
 import { connect } from "react-redux";
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 import StripeCheckout from "../../services/stripe/stripe.component";
+import { clearCart } from "../../redux/cart/cart.actions";
 
 import {
     CheckoutHeaderBlockContainer,
@@ -11,7 +12,7 @@ import {
     CheckoutTotalContainer
 } from "./checkout.styles";
 
-const CheckoutPage = ({ cartItems, totalPrice }) => {
+const CheckoutPage = ({ cartItems, totalPrice, clearCart }) => {
     return (
         <CheckoutPageContainer>
             <CheckoutHeaderContainer>
@@ -35,9 +36,7 @@ const CheckoutPage = ({ cartItems, totalPrice }) => {
                 cartItems.map(cartItem => <CheckoutItem key={cartItem.id} cartItem={cartItem} />)
             }
             <CheckoutTotalContainer>
-                {
-                    totalPrice > 0 ? <StripeCheckout total={totalPrice} /> : ''
-                }
+                <StripeCheckout total={totalPrice} clearCart={clearCart} />
             </CheckoutTotalContainer>
         </CheckoutPageContainer>
     );
@@ -48,4 +47,8 @@ const mapStateToProps = createStructuredSelector({
     totalPrice: selectCartTotalPrice
 });
 
-export default connect(mapStateToProps)(CheckoutPage);
+const mapDispatchToProps = dispatch => ({
+    clearCart: () => dispatch(clearCart())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CheckoutPage);

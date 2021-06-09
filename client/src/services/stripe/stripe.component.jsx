@@ -122,17 +122,18 @@ const ErrorMessage = ({children}) => (
 );
 
 const ResetButton = ({onClick}) => (
-    <button type="button" className="ResetButton" onClick={onClick}>
-        <svg width="32px" height="32px" viewBox="0 0 32 32">
-            <path
-                fill="#FFF"
-                d="M15,7.05492878 C10.5000495,7.55237307 7,11.3674463 7,16 C7,20.9705627 11.0294373,25 16,25 C20.9705627,25 25,20.9705627 25,16 C25,15.3627484 24.4834055,14.8461538 23.8461538,14.8461538 C23.2089022,14.8461538 22.6923077,15.3627484 22.6923077,16 C22.6923077,19.6960595 19.6960595,22.6923077 16,22.6923077 C12.3039405,22.6923077 9.30769231,19.6960595 9.30769231,16 C9.30769231,12.3039405 12.3039405,9.30769231 16,9.30769231 L16,12.0841673 C16,12.1800431 16.0275652,12.2738974 16.0794108,12.354546 C16.2287368,12.5868311 16.5380938,12.6540826 16.7703788,12.5047565 L22.3457501,8.92058924 L22.3457501,8.92058924 C22.4060014,8.88185624 22.4572275,8.83063012 22.4959605,8.7703788 C22.6452866,8.53809377 22.5780351,8.22873685 22.3457501,8.07941076 L22.3457501,8.07941076 L16.7703788,4.49524351 C16.6897301,4.44339794 16.5958758,4.41583275 16.5,4.41583275 C16.2238576,4.41583275 16,4.63969037 16,4.91583275 L16,7 L15,7 L15,7.05492878 Z M16,32 C7.163444,32 0,24.836556 0,16 C0,7.163444 7.163444,0 16,0 C24.836556,0 32,7.163444 32,16 C32,24.836556 24.836556,32 16,32 Z"
-            />
-        </svg>
-    </button>
+    <CustomButton type={'button'} className={'ResetButton'} onClick={onClick}>
+        <LeftArrowIcon className={'LeftArrowIcon'} /> Reset Test Payment
+        {/*<svg width="32px" height="32px" viewBox="0 0 32 32">*/}
+        {/*    <path*/}
+        {/*        fill="#FFF"*/}
+        {/*        d="M15,7.05492878 C10.5000495,7.55237307 7,11.3674463 7,16 C7,20.9705627 11.0294373,25 16,25 C20.9705627,25 25,20.9705627 25,16 C25,15.3627484 24.4834055,14.8461538 23.8461538,14.8461538 C23.2089022,14.8461538 22.6923077,15.3627484 22.6923077,16 C22.6923077,19.6960595 19.6960595,22.6923077 16,22.6923077 C12.3039405,22.6923077 9.30769231,19.6960595 9.30769231,16 C9.30769231,12.3039405 12.3039405,9.30769231 16,9.30769231 L16,12.0841673 C16,12.1800431 16.0275652,12.2738974 16.0794108,12.354546 C16.2287368,12.5868311 16.5380938,12.6540826 16.7703788,12.5047565 L22.3457501,8.92058924 L22.3457501,8.92058924 C22.4060014,8.88185624 22.4572275,8.83063012 22.4959605,8.7703788 C22.6452866,8.53809377 22.5780351,8.22873685 22.3457501,8.07941076 L22.3457501,8.07941076 L16.7703788,4.49524351 C16.6897301,4.44339794 16.5958758,4.41583275 16.5,4.41583275 C16.2238576,4.41583275 16,4.63969037 16,4.91583275 L16,7 L15,7 L15,7.05492878 Z M16,32 C7.163444,32 0,24.836556 0,16 C0,7.163444 7.163444,0 16,0 C24.836556,0 32,7.163444 32,16 C32,24.836556 24.836556,32 16,32 Z"*/}
+        {/*    />*/}
+        {/*</svg>*/}
+    </CustomButton>
 );
 
-const CheckoutDisplay = ({total}) => {
+const CheckoutDisplay = ({ total, clearCart }) => {
     const stripe = useStripe();
     const elements = useElements();
     const [error, setError] = useState(null);
@@ -221,6 +222,7 @@ const CheckoutDisplay = ({total}) => {
                         setCustomerDetails(res.data.success.customer);
                         setChargeDetails(res.data.success.charge);
                         console.log(res.data.success);
+                        clearCart();
                     }
                 });
             }
@@ -288,6 +290,8 @@ const CheckoutDisplay = ({total}) => {
         setPaymentMethod(null);
         setCustomerDetails(null);
         setChargeDetails(null);
+        setViewingShippingFields(true);
+        setBillingSameAsShipping(false);
         setBillingDetails({
             email: '',
             phone: '',
@@ -311,25 +315,7 @@ const CheckoutDisplay = ({total}) => {
         });
     };
 
-    return (customerDetails && chargeDetails) ? (
-        <div className="Result">
-            <div className="ResultTitle" role="alert">
-                Payment successful
-            </div>
-            <div className="ResultMessage">
-                <span className={'CheckoutSuccessMessage'}>Thanks for trying Stripe Elements. No money was charged, payment details below.</span>
-                <br/>
-                <span className={'CheckoutSuccessMessage'}>
-                    <span className={'CheckoutSuccessTitle'}>Stripe Customer Id:</span> {customerDetails.id}
-                </span>
-                <br/>
-                <span className={'CheckoutSuccessMessage'}>
-                    <span className={'CheckoutSuccessTitle'}>Stripe Charge Id:</span> {chargeDetails.id}
-                </span>
-            </div>
-            <ResetButton onClick={reset} />
-        </div>
-    ) : (
+    return (total > 0) ? (
         (viewingShippingFields) ? (
             <form className={'Form'} onSubmit={shippingHandleSubmit}>
                 <h3 className={'FormGroupHeader'}>Customer Info</h3>
@@ -440,110 +426,130 @@ const CheckoutDisplay = ({total}) => {
                 <CustomButton type={'submit'} disabled={processing || !stripe}>Next <RightArrowIcon className={'RightArrowIcon'} /></CustomButton>
             </form>
         ) : (
-            <form className="Form" onSubmit={handleSubmit}>
-                <CustomButton type={'button'} onClick={() => setViewingShippingFields(true)} disabled={processing || !stripe}><LeftArrowIcon className={'LeftArrowIcon'} /> Back to Shipping</CustomButton>
+                <form className="Form" onSubmit={handleSubmit}>
+                    <CustomButton type={'button'} onClick={() => setViewingShippingFields(true)} disabled={processing || !stripe}><LeftArrowIcon className={'LeftArrowIcon'} /> Back to Shipping</CustomButton>
 
-                <h3 className={'FormGroupHeader'} style={{ marginBottom: 0 }}>Billing Address</h3>
+                    <h3 className={'FormGroupHeader'} style={{ marginBottom: 0 }}>Billing Address</h3>
 
-                <div className={'SameAsShipCheckbox'}>
-                    <input type="checkbox" id="billingSameAsShipping" name="billingSameAsShipping" defaultChecked={billingSameAsShipping} value={billingSameAsShipping}
-                           onChange={(e) => {
-                               billingSameAsShippingHandleChange(e);
-                           }}
+                    <div className={'SameAsShipCheckbox'}>
+                        <input type="checkbox" id="billingSameAsShipping" name="billingSameAsShipping" defaultChecked={billingSameAsShipping} value={billingSameAsShipping}
+                               onChange={(e) => {
+                                   billingSameAsShippingHandleChange(e);
+                               }}
+                        />
+                        <label htmlFor="billingSameAsShipping" style={{ userSelect: "none", fontSize: '22px' }}> Same as Shipping</label>
+                        <br/>
+                    </div>
+
+                    <fieldset className={'FormGroup'}>
+                        <Field
+                            label="Address 1"
+                            id="address1"
+                            type="text"
+                            placeholder="123 Example St"
+                            required
+                            autoComplete="address1"
+                            value={billingAddressDetails.line1}
+                            onChange={(e) => {
+                                setBillingAddressDetails({...billingAddressDetails, line1: e.target.value});
+                            }}
+                        />
+                        <Field
+                            label="Address 2"
+                            id="address2"
+                            type="text"
+                            placeholder="Unit #213"
+                            autoComplete="address2"
+                            value={billingAddressDetails.line2}
+                            onChange={(e) => {
+                                setBillingAddressDetails({...billingAddressDetails, line2: e.target.value});
+                            }}
+                        />
+                        <Field
+                            label="City"
+                            id="city"
+                            type="text"
+                            placeholder="City"
+                            required
+                            autoComplete="city"
+                            value={billingAddressDetails.city}
+                            onChange={(e) => {
+                                setBillingAddressDetails({...billingAddressDetails, city: e.target.value });
+                            }}
+                        />
+                        <Field
+                            label="State"
+                            id="state"
+                            type="text"
+                            placeholder="State"
+                            required
+                            autoComplete="state"
+                            value={billingAddressDetails.state}
+                            onChange={(e) => {
+                                setBillingAddressDetails({...billingAddressDetails, state: e.target.value});
+                            }}
+                        />
+                        <Field
+                            label="Zip Code"
+                            id="postal_code"
+                            type="text"
+                            placeholder="11324"
+                            required
+                            autoComplete="postal_code"
+                            value={billingAddressDetails.postal_code}
+                            onChange={(e) => {
+                                setBillingAddressDetails({...billingAddressDetails, postal_code: e.target.value});
+                            }}
+                        />
+                    </fieldset>
+
+                    <h3 className={'FormGroupHeader'}>Card Details</h3>
+
+                    <CardElement
+                        className={'stripe-inputs'}
+                        options={CARD_OPTIONS}
+                        onChange={e => {
+                            setError(e.error)
+                            setCardComplete(e.complete)
+                        }}
                     />
-                    <label htmlFor="billingSameAsShipping" style={{ userSelect: "none", fontSize: '22px' }}> Same as Shipping</label>
-                    <br/>
+
+                    {error && <ErrorMessage>{error.message}</ErrorMessage>}
+                    <CustomButton type={'submit'} error={error} disabled={processing || !stripe}>
+                        { processing ? 'Processing...' : `Pay $${total}` }
+                    </CustomButton>
+
+                    <div className={'test-payment-warning'}>
+                        *When testing a payment, the card number must be...*
+                        <br/>
+                        Card: 4242 4242 4242 4242
+                        <br/>
+                        Exp: Any valid date
+                        <br/>
+                        CVV: Any
+                    </div>
+                </form>
+            )
+    ) : (
+        (total === 0 && customerDetails && chargeDetails) ? (
+            <div className="Result">
+                <ResetButton onClick={reset} />
+                <div className="ResultTitle" role="alert">
+                    Payment successful
                 </div>
-
-                <fieldset className={'FormGroup'}>
-                    <Field
-                        label="Address 1"
-                        id="address1"
-                        type="text"
-                        placeholder="123 Example St"
-                        required
-                        autoComplete="address1"
-                        value={billingAddressDetails.line1}
-                        onChange={(e) => {
-                            setBillingAddressDetails({...billingAddressDetails, line1: e.target.value});
-                        }}
-                    />
-                    <Field
-                        label="Address 2"
-                        id="address2"
-                        type="text"
-                        placeholder="Unit #213"
-                        autoComplete="address2"
-                        value={billingAddressDetails.line2}
-                        onChange={(e) => {
-                            setBillingAddressDetails({...billingAddressDetails, line2: e.target.value});
-                        }}
-                    />
-                    <Field
-                        label="City"
-                        id="city"
-                        type="text"
-                        placeholder="City"
-                        required
-                        autoComplete="city"
-                        value={billingAddressDetails.city}
-                        onChange={(e) => {
-                            setBillingAddressDetails({...billingAddressDetails, city: e.target.value });
-                        }}
-                    />
-                    <Field
-                        label="State"
-                        id="state"
-                        type="text"
-                        placeholder="State"
-                        required
-                        autoComplete="state"
-                        value={billingAddressDetails.state}
-                        onChange={(e) => {
-                            setBillingAddressDetails({...billingAddressDetails, state: e.target.value});
-                        }}
-                    />
-                    <Field
-                        label="Zip Code"
-                        id="postal_code"
-                        type="text"
-                        placeholder="11324"
-                        required
-                        autoComplete="postal_code"
-                        value={billingAddressDetails.postal_code}
-                        onChange={(e) => {
-                            setBillingAddressDetails({...billingAddressDetails, postal_code: e.target.value});
-                        }}
-                    />
-                </fieldset>
-
-                <h3 className={'FormGroupHeader'}>Card Details</h3>
-
-                <CardElement
-                    className={'stripe-inputs'}
-                    options={CARD_OPTIONS}
-                    onChange={e => {
-                        setError(e.error)
-                        setCardComplete(e.complete)
-                    }}
-                />
-
-                {error && <ErrorMessage>{error.message}</ErrorMessage>}
-                <CustomButton type={'submit'} error={error} disabled={processing || !stripe}>
-                    { processing ? 'Processing...' : `Pay $${total}` }
-                </CustomButton>
-
-                <div className={'test-payment-warning'}>
-                    *When testing a payment, the card number must be...*
+                <div className="ResultMessage">
+                    <span className={'CheckoutSuccessMessage'}>Thanks for trying Stripe Elements. No money was charged, payment details below.</span>
                     <br/>
-                    Card: 4242 4242 4242 4242
+                    <span className={'CheckoutSuccessMessage'}>
+                <span className={'CheckoutSuccessTitle'}>Stripe Customer Id:</span> {customerDetails.id}
+            </span>
                     <br/>
-                    Exp: Any valid date
-                    <br/>
-                    CVV: Any
+                    <span className={'CheckoutSuccessMessage'}>
+                <span className={'CheckoutSuccessTitle'}>Stripe Charge Id:</span> {chargeDetails.id}
+            </span>
                 </div>
-            </form>
-        )
+            </div>
+        ) : ('')
     );
 }
 
@@ -559,10 +565,10 @@ const ELEMENTS_OPTIONS = {
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe('pk_test_51IqrBVBKQUM0yehkYlfWbvYUhSXGa0GxbVv8JWRXP5ZOCEEc2yijCBXdSP1K7rKkQmktrZxPNZPKNCJLwLLIkqOk00cLAYfNDW');
 
-const StripeCheckout = ({ total }) => (
+const StripeCheckout = ({ total, clearCart }) => (
     <div className={'CheckoutWrapper'}>
         <Elements stripe={stripePromise} options={ELEMENTS_OPTIONS}>
-            <CheckoutDisplay total={total} />
+            <CheckoutDisplay total={total} clearCart={clearCart} />
         </Elements>
     </div>
 );

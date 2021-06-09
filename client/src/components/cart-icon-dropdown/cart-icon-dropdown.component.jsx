@@ -10,6 +10,8 @@ import {
     CustomCheckoutButton,
     EmptyCartContainer
 } from "./cart-icon-dropdown.styles";
+import {GoShopCustomButton} from "../../pages/checkout/checkout.styles";
+import {Link} from "react-router-dom";
 
 const CartDropdown = ({ cartItems, history }) => {
     return (
@@ -18,7 +20,12 @@ const CartDropdown = ({ cartItems, history }) => {
                 {
                     cartItems.length ?
                         (cartItems.map(cartItem => <CartItem key={cartItem.id} item={cartItem} />))
-                        : <EmptyCartContainer>Your cart is empty</EmptyCartContainer>
+                        : (
+                            <EmptyCartContainer>
+                                Your cart is empty
+                                <GoShopCustomButton type={'button'} onClick={() => history.push('/shop')}>Go to Shop Page</GoShopCustomButton>
+                            </EmptyCartContainer>
+                        )
                 }
             </CartItemsContainer>
             <CustomCheckoutButton onClick={() => history.push('/checkout')}>GO TO CHECKOUT</CustomCheckoutButton>

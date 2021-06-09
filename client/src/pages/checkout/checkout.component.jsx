@@ -6,32 +6,45 @@ import StripeCheckout from "../../services/stripe/stripe.component";
 import { clearCart } from "../../redux/cart/cart.actions";
 
 import {
+    CartEmpty,
     CheckoutHeaderBlockContainer,
     CheckoutHeaderContainer,
     CheckoutPageContainer,
-    CheckoutTotalContainer
+    CheckoutTotalContainer, GoShopCustomButton
 } from "./checkout.styles";
+import {EmptyCartContainer} from "../../components/cart-icon-dropdown/cart-icon-dropdown.styles";
+import {Link} from "react-router-dom";
+import {withRouter} from "react-router";
 
-const CheckoutPage = ({ cartItems, totalPrice, clearCart }) => {
+const CheckoutPage = ({ cartItems, totalPrice, clearCart, history }) => {
     return (
         <CheckoutPageContainer>
-            <CheckoutHeaderContainer>
-                <CheckoutHeaderBlockContainer>
-                    <span>Product</span>
-                </CheckoutHeaderBlockContainer>
-                <CheckoutHeaderBlockContainer>
-                    <span>Description</span>
-                </CheckoutHeaderBlockContainer>
-                <CheckoutHeaderBlockContainer>
-                    <span>Quantity</span>
-                </CheckoutHeaderBlockContainer>
-                <CheckoutHeaderBlockContainer>
-                    <span>Price</span>
-                </CheckoutHeaderBlockContainer>
-                <CheckoutHeaderBlockContainer>
-                    <span>Remove</span>
-                </CheckoutHeaderBlockContainer>
-            </CheckoutHeaderContainer>
+            {
+                cartItems.length > 0 ? (
+                    <CheckoutHeaderContainer>
+                        <CheckoutHeaderBlockContainer>
+                            <span>Product</span>
+                        </CheckoutHeaderBlockContainer>
+                        <CheckoutHeaderBlockContainer>
+                            <span>Description</span>
+                        </CheckoutHeaderBlockContainer>
+                        <CheckoutHeaderBlockContainer>
+                            <span>Quantity</span>
+                        </CheckoutHeaderBlockContainer>
+                        <CheckoutHeaderBlockContainer>
+                            <span>Price</span>
+                        </CheckoutHeaderBlockContainer>
+                        <CheckoutHeaderBlockContainer>
+                            <span>Remove</span>
+                        </CheckoutHeaderBlockContainer>
+                    </CheckoutHeaderContainer>
+                ) : (
+                    <CartEmpty>
+                        Your cart is empty
+                        <GoShopCustomButton type={'button'} onClick={() => history.push('/shop')}>Go to Shop Page</GoShopCustomButton>
+                    </CartEmpty>
+                )
+            }
             {
                 cartItems.map(cartItem => <CheckoutItem key={cartItem.id} cartItem={cartItem} />)
             }
@@ -51,4 +64,4 @@ const mapDispatchToProps = dispatch => ({
     clearCart: () => dispatch(clearCart())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CheckoutPage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CheckoutPage));

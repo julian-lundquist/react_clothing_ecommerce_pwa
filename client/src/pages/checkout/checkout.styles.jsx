@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import CustomButton from "../../components/custom-button/custom-button.component";
 
 export const CheckoutPageContainer = styled.div`
     width: 90vw;
@@ -30,4 +31,12 @@ export const CheckoutHeaderBlockContainer = styled.div`
 export const CheckoutTotalContainer = styled.div`
     margin: 0 auto;
     font-size: 36px;
+`;
+
+export const CartEmpty = styled.div`
+    font-size: 3em;
+`;
+
+export const GoShopCustomButton = styled(CustomButton)`
+    margin: 0 auto;
 `;

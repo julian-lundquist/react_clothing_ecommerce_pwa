@@ -3,7 +3,7 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCCArM2f2RljKCpiuKu7YXvBomVHiidgAw",
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: "people-s-clothing-test.firebaseapp.com",
     projectId: "people-s-clothing-test",
     storageBucket: "people-s-clothing-test.appspot.com",

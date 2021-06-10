@@ -12,8 +12,6 @@ import {
     CheckoutPageContainer,
     CheckoutTotalContainer, GoShopCustomButton
 } from "./checkout.styles";
-import {EmptyCartContainer} from "../../components/cart-icon-dropdown/cart-icon-dropdown.styles";
-import {Link} from "react-router-dom";
 import {withRouter} from "react-router";
 
 const CheckoutPage = ({ cartItems, totalPrice, clearCart, history }) => {

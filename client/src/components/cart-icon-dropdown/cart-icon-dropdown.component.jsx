@@ -11,7 +11,6 @@ import {
     EmptyCartContainer
 } from "./cart-icon-dropdown.styles";
 import {GoShopCustomButton} from "../../pages/checkout/checkout.styles";
-import {Link} from "react-router-dom";
 
 const CartDropdown = ({ cartItems, history }) => {
     return (

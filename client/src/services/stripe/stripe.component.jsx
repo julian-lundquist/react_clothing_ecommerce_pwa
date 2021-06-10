@@ -13,6 +13,11 @@ import {
 } from '@stripe/react-stripe-js';
 import CustomButton from "../../components/custom-button/custom-button.component";
 
+import PlacesAutocomplete, {
+    geocodeByAddress,
+    getLatLng,
+} from 'react-places-autocomplete';
+
 import axios from "axios";
 
 axios.defaults.baseURL = 'http://localhost:5000';
@@ -57,7 +62,7 @@ const Field = ({
         </label>
 
         {
-            label.toLowerCase() == 'phone' ? (
+            label.toLowerCase() === 'phone' ? (
                 <div className={'PhoneNumberRow'}>
                     <PhoneInput
                         country={'us'}
@@ -139,7 +144,6 @@ const CheckoutDisplay = ({ total, clearCart }) => {
     const [error, setError] = useState(null);
     const [cardComplete, setCardComplete] = useState(false);
     const [processing, setProcessing] = useState(false);
-    const [paymentMethod, setPaymentMethod] = useState(null);
     const [viewingShippingFields, setViewingShippingFields] = useState(true);
     const [billingSameAsShipping, setBillingSameAsShipping] = useState(false);
     const [customerDetails, setCustomerDetails] = useState(null);
@@ -167,39 +171,6 @@ const CheckoutDisplay = ({ total, clearCart }) => {
     });
 
     const processTransaction = async () => {
-        // await stripe.createPaymentMethod({
-        //     type: 'card',
-        //     card: elements.getElement(CardElement),
-        //     billing_details: {
-        //         address: billingAddressDetails,
-        //         name: billingDetails.name,
-        //         email: billingDetails.email,
-        //         phone: billingDetails.phone
-        //     },
-        // }).then(result => {
-        //     if (result.error) {
-        //         setError(result.error);
-        //     } else {
-        //         setPaymentMethod(result.paymentMethod);
-        //         console.log(result.paymentMethod);
-        //
-        //         axios.post('/payment',{
-        //             address: billingAddressDetails,
-        //             name: billingDetails.name,
-        //             email: billingDetails.email,
-        //             phone: billingDetails.phone,
-        //             amount: total * 100,
-        //             paymentMethod: result.paymentMethod
-        //         }).then(res => {
-        //             if (res.data.error) {
-        //                 console.log(res.data.error);
-        //             } else {
-        //                 console.log(res.data.success);
-        //             }
-        //         });
-        //     }
-        // });
-
         await stripe.createToken(elements.getElement(CardElement)).then((result) => {
             if (result.error) {
                 setError(result.error);
@@ -287,7 +258,6 @@ const CheckoutDisplay = ({ total, clearCart }) => {
     const reset = () => {
         setError(null);
         setProcessing(false);
-        setPaymentMethod(null);
         setCustomerDetails(null);
         setChargeDetails(null);
         setViewingShippingFields(true);
@@ -313,6 +283,14 @@ const CheckoutDisplay = ({ total, clearCart }) => {
             postal_code: '',
             country: 'US'
         });
+    };
+
+    const handleGoogleAutocompleteSelect = address => {
+        console.log(address)
+        geocodeByAddress(address)
+            .then(results => getLatLng(results[0]))
+            .then(latLng => console.log('Success', latLng))
+            .catch(error => console.error('Error', error));
     };
 
     return (total > 0) ? (
@@ -362,18 +340,53 @@ const CheckoutDisplay = ({ total, clearCart }) => {
                 <h3 className={'FormGroupHeader'}>Shipping Address</h3>
 
                 <fieldset className={'FormGroup'}>
-                    <Field
-                        label="Address 1"
-                        id="address1-ship"
-                        type="text"
-                        placeholder="123 Example St"
-                        required
-                        autoComplete="address1"
+                    <PlacesAutocomplete
                         value={shippingAddressDetails.line1}
-                        onChange={(e) => {
-                            setShippingAddressDetails({...shippingAddressDetails, line1: e.target.value});
-                        }}
-                    />
+                        onChange={ (e) => setShippingAddressDetails({...shippingAddressDetails, line1: e}) }
+                        onSelect={handleGoogleAutocompleteSelect}
+                    >
+                        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                            <div>
+                                <Field
+                                    label="Address 1"
+                                    id="address1-ship"
+                                    type="text"
+                                    placeholder="123 Example St"
+                                    required
+                                    autoComplete="address1"
+                                    value={shippingAddressDetails.line1}
+                                    {...getInputProps({
+                                        className: 'location-search-input'
+                                    })}
+                                />
+
+                                <div className="autocomplete-dropdown-container">
+                                    {loading && <div>Loading...</div>}
+                                    {suggestions.map(suggestion => {
+                                        const className = suggestion.active
+                                            ? 'suggestion-item--active'
+                                            : 'suggestion-item';
+                                        // inline style for demonstration purpose
+                                        const style = suggestion.active
+                                            ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                                            : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                                        return (
+                                            <div
+                                                key={suggestion.placeId}
+                                                {...getSuggestionItemProps(suggestion, {
+                                                    className,
+                                                    style,
+                                                })}
+                                            >
+                                                <span>{suggestion.description}</span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
+                    </PlacesAutocomplete>
+
                     <Field
                         label="Address 2"
                         id="address2-ship"
@@ -565,12 +578,14 @@ const ELEMENTS_OPTIONS = {
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe('pk_test_51IqrBVBKQUM0yehkYlfWbvYUhSXGa0GxbVv8JWRXP5ZOCEEc2yijCBXdSP1K7rKkQmktrZxPNZPKNCJLwLLIkqOk00cLAYfNDW');
 
-const StripeCheckout = ({ total, clearCart }) => (
-    <div className={'CheckoutWrapper'}>
-        <Elements stripe={stripePromise} options={ELEMENTS_OPTIONS}>
-            <CheckoutDisplay total={total} clearCart={clearCart} />
-        </Elements>
-    </div>
-);
+const StripeCheckout = ({ total, clearCart }) => {
+    return (
+        <div className={'CheckoutWrapper'}>
+            <Elements stripe={stripePromise} options={ELEMENTS_OPTIONS}>
+                <CheckoutDisplay total={total} clearCart={clearCart} />
+            </Elements>
+        </div>
+    );
+}
 
 export default StripeCheckout;

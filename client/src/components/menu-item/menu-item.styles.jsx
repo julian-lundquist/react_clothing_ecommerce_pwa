@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const MenuItemContainer = styled.div`
     min-width: 30%;
-    height: ${ ({ size }) => (size == 'large' ? '30em' : '240px') };
+    height: ${ ({ size }) => (size === 'large' ? '30em' : '240px') };
     flex: 1 1 auto;
     display: flex;
     align-items: center;

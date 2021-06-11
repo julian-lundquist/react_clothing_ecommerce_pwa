@@ -1,4 +1,5 @@
 import './stripe.scss';
+import { ReactComponent as CloseXIcon } from '../../assets/times-solid.svg';
 import { ReactComponent as LeftArrowIcon } from '../../assets/arrow-left-solid.svg';
 import { ReactComponent as RightArrowIcon } from '../../assets/arrow-right-solid.svg';
 import React, {useState} from 'react';
@@ -19,6 +20,7 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 
 import axios from "axios";
+import {SpinnerContainer} from "../../components/loading-spinner/loading-spinner.styles";
 
 axios.defaults.baseURL = 'http://localhost:5000';
 
@@ -128,7 +130,7 @@ const ErrorMessage = ({children}) => (
 
 const ResetButton = ({onClick}) => (
     <CustomButton type={'button'} className={'ResetButton'} onClick={onClick}>
-        <LeftArrowIcon className={'LeftArrowIcon'} /> Reset Test Payment
+        <CloseXIcon className={'CloseXIcon'} /> Close Test Payment
         {/*<svg width="32px" height="32px" viewBox="0 0 32 32">*/}
         {/*    <path*/}
         {/*        fill="#FFF"*/}
@@ -148,6 +150,7 @@ const CheckoutDisplay = ({ total, clearCart }) => {
     const [billingSameAsShipping, setBillingSameAsShipping] = useState(false);
     const [customerDetails, setCustomerDetails] = useState(null);
     const [chargeDetails, setChargeDetails] = useState(null);
+    // const [addressSuggestions, setAddressSuggestions] = useState(null);
     const [billingDetails, setBillingDetails] = useState({
         email: '',
         phone: '',
@@ -219,7 +222,7 @@ const CheckoutDisplay = ({ total, clearCart }) => {
         }
 
         await processTransaction();
-    };
+    }
 
     const shippingHandleSubmit = (event) => {
         event.preventDefault();
@@ -236,7 +239,7 @@ const CheckoutDisplay = ({ total, clearCart }) => {
         }
 
         setViewingShippingFields(false);
-    };
+    }
 
     const billingSameAsShippingHandleChange = async (event) => {
         await setBillingSameAsShipping(!billingSameAsShipping);
@@ -253,7 +256,7 @@ const CheckoutDisplay = ({ total, clearCart }) => {
                 country: 'US'
             });
         }
-    };
+    }
 
     const reset = () => {
         setError(null);
@@ -283,15 +286,31 @@ const CheckoutDisplay = ({ total, clearCart }) => {
             postal_code: '',
             country: 'US'
         });
-    };
+    }
 
-    const handleGoogleAutocompleteSelect = address => {
-        console.log(address)
+    const handleGoogleAutocompleteSelection = address => {
+        // console.log(address)
+        geocodeByAddress(address)
+            .then(results => {
+                console.log(results[0]);
+                // const addressComponents = results[0].address_components;
+                const addressFields = results[0].formatted_address.split(',');
+                const addressStateAndZip = addressFields[2].trim().split(' ');
+
+                setShippingAddressDetails({
+                    line1: addressFields[0].trim(),
+                    line2: '',
+                    city: addressFields[1].trim(),
+                    state: addressStateAndZip[0],
+                    postal_code: addressStateAndZip[1],
+                    country: 'US'
+                });
+            });
         geocodeByAddress(address)
             .then(results => getLatLng(results[0]))
             .then(latLng => console.log('Success', latLng))
             .catch(error => console.error('Error', error));
-    };
+    }
 
     return (total > 0) ? (
         (viewingShippingFields) ? (
@@ -343,7 +362,9 @@ const CheckoutDisplay = ({ total, clearCart }) => {
                     <PlacesAutocomplete
                         value={shippingAddressDetails.line1}
                         onChange={ (e) => setShippingAddressDetails({...shippingAddressDetails, line1: e}) }
-                        onSelect={handleGoogleAutocompleteSelect}
+                        onSelect={handleGoogleAutocompleteSelection}
+                        highlightFirstSuggestion={false}
+                        shouldFetchSuggestions={true}
                     >
                         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                             <div>
@@ -361,27 +382,31 @@ const CheckoutDisplay = ({ total, clearCart }) => {
                                 />
 
                                 <div className="autocomplete-dropdown-container">
-                                    {loading && <div>Loading...</div>}
-                                    {suggestions.map(suggestion => {
-                                        const className = suggestion.active
-                                            ? 'suggestion-item--active'
-                                            : 'suggestion-item';
-                                        // inline style for demonstration purpose
-                                        const style = suggestion.active
-                                            ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                                            : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                                        return (
-                                            <div
-                                                key={suggestion.placeId}
-                                                {...getSuggestionItemProps(suggestion, {
-                                                    className,
-                                                    style,
-                                                })}
-                                            >
-                                                <span>{suggestion.description}</span>
-                                            </div>
-                                        );
-                                    })}
+                                    {
+                                        loading && <SpinnerContainer style={{ margin: '1em 0' }} />
+                                    }
+                                    {
+                                        suggestions ? suggestions.map(suggestion => {
+                                            const className = suggestion.active
+                                                ? 'suggestion-item--active'
+                                                : 'suggestion-item';
+                                            // inline style for demonstration purpose
+                                            const style = suggestion.active
+                                                ? { backgroundColor: '#dbdbdb', cursor: 'pointer' }
+                                                : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                                            return (
+                                                <div
+                                                    key={suggestion.placeId}
+                                                    {...getSuggestionItemProps(suggestion, {
+                                                        className,
+                                                        style
+                                                    })}
+                                                >
+                                                    <span className={'autocomplete-item'}>{suggestion.description}</span>
+                                                </div>
+                                            );
+                                        }) : ('')
+                                    }
                                 </div>
                             </div>
                         )}

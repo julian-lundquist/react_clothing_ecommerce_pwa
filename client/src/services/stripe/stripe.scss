@@ -16,6 +16,12 @@ button {
   border-style: none;
 }
 
+.CloseXIcon {
+  width: 1.5em;
+  height: 100%;
+  margin-right: 0.75em;
+}
+
 .LeftArrowIcon {
   width: 2em;
   height: 100%;
@@ -98,6 +104,7 @@ button {
   width: 40%;
   min-width: 70px;
   padding: 11px 0;
+  user-select: none;
   font-size: 24px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -138,6 +145,23 @@ button {
       animation: 1ms void-animation-out;
     }
   }
+}
+
+.autocomplete-dropdown-container > div {
+  border-top: 1px solid black;
+}
+
+.autocomplete-item {
+  font-size: 26px;
+  padding: 0 6px;
+  color: navajowhite;
+  letter-spacing: 1px;
+  text-shadow:
+      2px 1px 0 #000,
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000;
 }
 
 .FormRowInput {

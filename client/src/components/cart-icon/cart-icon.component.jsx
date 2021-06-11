@@ -9,7 +9,7 @@ const CartIcon = ({ toggleCartHidden, itemCount }) => {
     return (
         <CartIconContainer onClick={toggleCartHidden}>
             <ShoppingIconContainer />
-            <ItemCountContainer onChange={() => itemCount > 9 ? selectItemCountStyles(itemCount) : null}> {itemCount} </ItemCountContainer>
+            <ItemCountContainer onChange={() => selectItemCountStyles(itemCount)}> {itemCount > 0 ? itemCount : ''} </ItemCountContainer>
         </CartIconContainer>
     );
 };

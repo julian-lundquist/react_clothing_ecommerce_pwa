@@ -4,11 +4,11 @@ import { createStructuredSelector } from "reselect";
 import CartIcon from "../cart-icon/cart-icon.component";
 import CartDropdown from "../cart-icon-dropdown/cart-icon-dropdown.component";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
-import { selectCartHidden } from "../../redux/cart/cart.selectors";
-import {HeaderContainer, LogoContainer, LogoSVG, OptionLink, OptionsContainer} from "./header.styles";
+import {selectCartHidden, selectCartTotalPrice} from "../../redux/cart/cart.selectors";
+import {HeaderContainer, LogoContainer, LogoSVG, OptionLink, OptionsContainer, CartTotalPrice} from "./header.styles";
 import {signOutStart} from "../../redux/user/user.actions";
 
-const Header = ({ currentUser, hidden, signOutStart }) => (
+const Header = ({ currentUser, hidden, signOutStart, total }) => (
     <HeaderContainer>
         <LogoContainer to={'/'}>
             <LogoSVG />
@@ -35,12 +35,14 @@ const Header = ({ currentUser, hidden, signOutStart }) => (
         {
             hidden ? null : <CartDropdown />
         }
+        <CartTotalPrice>{total > 0 ? '$' + total : ''}</CartTotalPrice>
     </HeaderContainer>
 );
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-    hidden: selectCartHidden
+    hidden: selectCartHidden,
+    total: selectCartTotalPrice
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -6,8 +6,8 @@ export const HeaderContainer = styled.div`
     height: 70px;
     width: 100%;
     display: flex;
+    align-items: center;
     justify-content: center;
-    //margin-bottom: 25px;
     background-color: #dead87;
 `;
 
@@ -50,5 +50,11 @@ export const OptionLink = styled(Link)`
     &:hover {
         color: dimgray;
     }
+`;
+
+export const CartTotalPrice = styled.div`
+    font-size: 1.5em;
+    letter-spacing: -1px;
+    padding: 0 10px;
 `;
 

@@ -19,7 +19,7 @@ const CartDropdown = ({ cartItems, toggleCartHidden, isCartHidden, history }) =>
         history.push('/' + path);
     }
 
-    console.log(isCartHidden);
+    console.log('Is Cart Hidden: ' + isCartHidden);
 
     return (
         <CartDropdownContainer>

@@ -13,13 +13,13 @@ import {
 import {GoShopCustomButton} from "../../pages/checkout/checkout.styles";
 import {toggleCartHidden} from "../../redux/cart/cart.actions";
 
-const CartDropdown = ({ cartItems, toggleCartHidden, isCartHidden, history }) => {
+const CartDropdown = ({ cartItems, isCartHidden, toggleCartHidden, history }) => {
     const toggleCartDropdown = (path) => {
-        toggleCartHidden();
-        history.push('/' + path);
+        if (!isCartHidden) {
+            toggleCartHidden();
+            history.push('/' + path);
+        }
     }
-
-    console.log('Is Cart Hidden: ' + isCartHidden);
 
     return (
         <CartDropdownContainer>

@@ -14,10 +14,13 @@ import {GoShopCustomButton} from "../../pages/checkout/checkout.styles";
 import {toggleCartHidden} from "../../redux/cart/cart.actions";
 
 const CartDropdown = ({ cartItems, isCartHidden, toggleCartHidden, history }) => {
-    const toggleCartDropdown = (path) => {
+    const closeCartDropdown = (path) => {
         if (!isCartHidden) {
             toggleCartHidden();
-            history.push('/' + path);
+
+            if (path) {
+                history.push('/' + path);
+            }
         }
     }
 
@@ -30,14 +33,14 @@ const CartDropdown = ({ cartItems, isCartHidden, toggleCartHidden, history }) =>
                         : (
                             <EmptyCartContainer>
                                 Your cart is empty
-                                <GoShopCustomButton type={'button'} onClick={() => toggleCartDropdown('shop')}>Go to Shop Page</GoShopCustomButton>
+                                <GoShopCustomButton type={'button'} onClick={() => closeCartDropdown('shop')}>Go to Shop Page</GoShopCustomButton>
                             </EmptyCartContainer>
                         )
                 }
             </CartItemsContainer>
             {
                 cartItems.length > 0 ? (
-                    <CustomCheckoutButton onClick={() => toggleCartDropdown('checkout')}>GO TO CHECKOUT</CustomCheckoutButton>
+                    <CustomCheckoutButton onClick={() => closeCartDropdown('checkout')}>GO TO CHECKOUT</CustomCheckoutButton>
                 ) : ('')
             }
         </CartDropdownContainer>

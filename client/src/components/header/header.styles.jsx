@@ -11,9 +11,17 @@ export const HeaderContainer = styled.div`
     background-color: #dead87;
 `;
 
+export const LogoSVG = styled(Logo)`
+    height: 100%;
+    width: 4em;
+    
+    &:hover {
+        width: 4.4em;
+    }
+`;
+
 export const LogoContainer = styled(Link)`
     height: 100%;
-    width: 30%;
 
     .logo {
       height: 100%;
@@ -25,18 +33,9 @@ export const LogoContainer = styled(Link)`
     }
 `;
 
-export const LogoSVG = styled(Logo)`
-    height: 100%;
-    width: 4em;
-    
-    &:hover {
-        width: 4.4em;
-    }
-`;
-
 export const OptionsContainer = styled.div`
-    width: 50%;
     height: 100%;
+    width: 75%;
     display: flex;
     align-items: center;
     justify-content: flex-end;

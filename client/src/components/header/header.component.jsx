@@ -64,8 +64,8 @@ const Header = ({ currentUser, isCartHidden, toggleCartHidden, signOutStart, tot
                         isCartHidden ? null : <CartDropdown />
                     }
                 </div>
+                <CartTotalPrice>{total > 0 ? '$' + total : ''}</CartTotalPrice>
             </OptionsContainer>
-            <CartTotalPrice>{total > 0 ? '$' + total : ''}</CartTotalPrice>
         </HeaderContainer>
     );
 }

@@ -479,7 +479,7 @@ const CheckoutDisplay = ({ total, clearCart }) => {
                         <br/>
                     </div>
 
-                    <fieldset className={'FormGroup'}>
+                    <fieldset className={'FormGroup'} disabled={billingSameAsShipping}>
                         <Field
                             label="Address 1"
                             id="address1"

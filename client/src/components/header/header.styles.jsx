@@ -9,15 +9,12 @@ export const HeaderContainer = styled.div`
     align-items: center;
     justify-content: center;
     background-color: #dead87;
+    user-select: none;
 `;
 
 export const LogoSVG = styled(Logo)`
     height: 100%;
     width: 4em;
-    
-    &:hover {
-        width: 4.4em;
-    }
 `;
 
 export const LogoContainer = styled(Link)`

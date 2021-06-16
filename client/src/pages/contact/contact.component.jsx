@@ -1,13 +1,13 @@
-import './contact.scss';
 import React from "react";
+import {ContactPageContainer, ContactPageContent, ContactPageHeader} from './contact.styles';
 
 const ContactPage = () => {
     return (
-        <div className={'ContactPageContainer'}>
-            <h1 className={'ContactPageHeader'}>Contact Us</h1>
+        <ContactPageContainer>
+            <ContactPageHeader>Contact Us</ContactPageHeader>
 
-            <div className={'ContactPageContent'}>Work in Progress</div>
-        </div>
+            <ContactPageContent>Work in Progress</ContactPageContent>
+        </ContactPageContainer>
     );
 }
 

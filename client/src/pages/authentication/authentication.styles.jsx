@@ -10,7 +10,7 @@ export const AuthenticationPageContainer = styled.div`
   @media screen and (max-width: 800px) {
     width: 80vw;
     padding: 0;
-    display: inline-block;
-    margin: 0 2em 0 2em;
+    display: block;
+    margin: 0 auto;
   }
 `;

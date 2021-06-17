@@ -15,7 +15,7 @@ export const CartDropdownContainer = styled.div`
     z-index: 5;
 
     @media screen and (max-width: 800px) {
-      width: 22em;
+      width: 95%;
       top: 70px;
       right: 10px;
     }
@@ -26,8 +26,8 @@ export const CartItemsContainer = styled.div`
     display: flex;
     flex-direction: column;
     overflow: scroll;
-    overflow-x: auto;
     overflow-y: auto;
+    overflow-x: hidden;
     
     &::-webkit-scrollbar-track {
         border: 1px solid black;

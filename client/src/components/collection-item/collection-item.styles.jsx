@@ -23,6 +23,7 @@ export const CollectionItemContainer = styled.div`
     
     @media screen and (max-width: 800px) {
         width: 40vw;
+        margin-bottom: 1em;
         
         &:hover {
             .image {
@@ -43,15 +44,31 @@ export const CollectionFooterContainer = styled.div`
     justify-content: space-between;
     font-size: 18px;
     margin-bottom: 10px;
+
+    @media screen and (max-width: 800px) {
+        display: block;
+        text-align: center;
+    }
 `;
 
 export const CollectionNameContainer = styled.span`
     width: 90%;
+
+    @media screen and (max-width: 800px) {
+        width: 100%;
+        display: block;
+    }
 `;
 
 export const CollectionPriceContainer = styled.span`
     width: 10%;
     text-align: right;
+
+    @media screen and (max-width: 800px) {
+        width: 100%;
+        display: block;
+        text-align: unset;
+    }
 `;
 
 export const CollectionImageContainer = styled.div`

@@ -51,7 +51,7 @@ export const OptionLink = styled(Link)`
     }
     
     @media screen and (max-width: 800px) {
-        font-size: 1.4em;
+        font-size: 1.3em;
     }
 `;
 

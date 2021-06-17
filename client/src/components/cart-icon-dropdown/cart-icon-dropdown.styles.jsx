@@ -15,9 +15,17 @@ export const CartDropdownContainer = styled.div`
     z-index: 5;
 
     @media screen and (max-width: 800px) {
-      width: 95%;
-      top: 70px;
-      right: 10px;
+        width: 50%;
+        top: 70px;
+        right: 10px;
+    }
+
+    @media screen and (max-width: 600px) {
+        width: 75%;
+    }
+
+    @media screen and (max-width: 400px) {
+        width: 95%;
     }
 `;
 

@@ -10,24 +10,23 @@ export const HeaderContainer = styled.div`
     justify-content: center;
     background-color: #dead87;
     user-select: none;
+    
+    @media screen and (max-width: 800px) {
+        height: 60px;
+    }
 `;
 
 export const LogoSVG = styled(Logo)`
     height: 100%;
     width: 4em;
+    
+    @media screen and (max-width: 800px) {
+        width: 3em;
+    }
 `;
 
 export const LogoContainer = styled(Link)`
     height: 100%;
-
-    .logo {
-      height: 100%;
-      width: 4em;
-
-      &:hover {
-        width: 4.4em;
-      }
-    }
 `;
 
 export const OptionsContainer = styled.div`
@@ -36,6 +35,10 @@ export const OptionsContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    
+    @media screen and (max-width: 800px) {
+        width: 85%;
+    }
 `;
 
 export const OptionLink = styled(Link)`
@@ -52,5 +55,9 @@ export const CartTotalPrice = styled.div`
     font-size: 1.5em;
     letter-spacing: -1px;
     padding: 0 10px;
+    
+    @media screen and (max-width: 800px) {
+        display: none;
+    }
 `;
 

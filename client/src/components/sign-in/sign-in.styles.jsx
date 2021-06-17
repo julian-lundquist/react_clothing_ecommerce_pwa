@@ -11,6 +11,5 @@ export const SignInTitle = styled.h2`
 `;
 
 export const SignInButtonsContainer = styled.div`
-    display: flex;
     justify-content: space-between;
 `;

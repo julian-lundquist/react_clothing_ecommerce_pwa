@@ -2,7 +2,7 @@ import * as React from "react";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
 
-import {SignUpContainer, SignUpTitle} from "./sign-up.styles";
+import {SignUpContainer, SignUpSubTitle, SignUpTitle} from "./sign-up.styles";
 import {signUpStart} from "../../redux/user/user.actions";
 import { connect } from "react-redux";
 import {useState} from "react";
@@ -36,7 +36,7 @@ const SignUpComponent = ({ signUpStart }) => {
     return (
         <SignUpContainer>
             <SignUpTitle>I do not have an account</SignUpTitle>
-            <span>Sign up with your email and password</span>
+            <SignUpSubTitle>Sign up with your email and password</SignUpSubTitle>
             <form className={'sign-up-form'} onSubmit={handleSubmit}>
                 <FormInput type={'text'} name={'displayName'} label={'displayName'} value={displayName} handleChange={handleChange} required />
                 <FormInput type={'email'} name={'email'} label={'email'} value={email} handleChange={handleChange} required />

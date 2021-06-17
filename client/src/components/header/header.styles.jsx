@@ -49,6 +49,10 @@ export const OptionLink = styled(Link)`
     &:hover {
         color: dimgray;
     }
+    
+    @media screen and (max-width: 800px) {
+        font-size: 1.4em;
+    }
 `;
 
 export const CartTotalPrice = styled.div`

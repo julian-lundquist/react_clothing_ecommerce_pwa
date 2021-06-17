@@ -6,11 +6,11 @@ export const AuthenticationPageContainer = styled.div`
     justify-content: space-between;
     margin: 0 auto;
     padding: 20px 80px;
-    
-    @media screen and (max-width: 800px) {
-      width: 80vw;
-      padding: 0;
-      margin-bottom: 3em;
-      display: block;
-    }
+
+  @media screen and (max-width: 800px) {
+    width: 80vw;
+    padding: 0;
+    display: inline-block;
+    margin: 0 2em 0 2em;
+  }
 `;

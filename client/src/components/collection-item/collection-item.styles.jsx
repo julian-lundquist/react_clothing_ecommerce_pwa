@@ -97,6 +97,10 @@ export const CustomAddCartButton = styled(CustomButton)`
 `;
 
 export const AddToCartText = styled.span`
-  padding: 0 1.5em;
+  padding: 0 1em;
   font-size: 13px;
+
+  @media screen and (max-width: 350px) {
+    font-size: 12px;
+  }
 `;

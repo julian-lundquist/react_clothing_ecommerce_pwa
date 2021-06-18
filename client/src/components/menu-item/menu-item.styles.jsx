@@ -60,6 +60,10 @@ export const MenuItemContent = styled.div`
     opacity: 0.6;
     position: absolute;
     user-select: none;
+
+    @media screen and (max-width: 800px) {
+      opacity: 0.9;
+    }
 `;
 
 export const MenuItemContentTitle = styled.div`

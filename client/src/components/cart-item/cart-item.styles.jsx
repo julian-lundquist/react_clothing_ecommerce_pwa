@@ -9,6 +9,7 @@ export const CartItemContainer = styled.div`
 
 export const ItemImageContainer = styled.img`
     width: 30%;
+    border-radius: 0.5em;
 `;
 
 export const ItemDetailsContainer = styled.div`

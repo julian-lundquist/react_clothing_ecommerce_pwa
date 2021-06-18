@@ -31,13 +31,13 @@ export const LogoContainer = styled(Link)`
 
 export const OptionsContainer = styled.div`
     height: 100%;
-    width: 75%;
+    width: 85%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     
     @media screen and (max-width: 800px) {
-        width: 85%;
+        width: 80%;
     }
 `;
 

@@ -77,6 +77,7 @@ export const CollectionImageContainer = styled.div`
     background-size: cover;
     background-position: center;
     margin-bottom: 5px;
+    border-radius: 0.5em;
     background-image: ${ ({ imageUrl }) => `url(${imageUrl})` };
 `;
 

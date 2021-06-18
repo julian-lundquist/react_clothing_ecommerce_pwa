@@ -55,8 +55,9 @@ export const MenuItemContent = styled.div`
     align-items: center;
     justify-content: center;
     border: 1px solid black;
-    background-color: white;
-    opacity: 0.8;
+    border-radius: 0.5em;
+    background-color: #dead87;
+    opacity: 0.6;
     position: absolute;
     user-select: none;
 `;

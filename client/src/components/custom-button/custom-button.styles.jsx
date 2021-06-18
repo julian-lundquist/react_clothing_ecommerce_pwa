@@ -58,6 +58,7 @@ export const CustomButtonContainer = styled.button`
     justify-content: center;
     user-select: none;
     margin-top: 1em;
+    border-radius: 0.5em;
     
     ${getButtonStyles}
 `;

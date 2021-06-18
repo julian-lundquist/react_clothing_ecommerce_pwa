@@ -38,10 +38,10 @@ const SignUpComponent = ({ signUpStart }) => {
             <SignUpTitle>I do not have an account</SignUpTitle>
             <SignUpSubTitle>Sign up with your email and password</SignUpSubTitle>
             <form className={'sign-up-form'} onSubmit={handleSubmit}>
-                <FormInput type={'text'} name={'displayName'} label={'displayName'} value={displayName} handleChange={handleChange} required />
-                <FormInput type={'email'} name={'email'} label={'email'} value={email} handleChange={handleChange} required />
-                <FormInput type={'password'} name={'password'} label={'password'} value={password} handleChange={handleChange} required />
-                <FormInput type={'password'} name={'confirmPassword'} label={'confirmPassword'} value={confirmPassword} handleChange={handleChange} required />
+                <FormInput type={'text'} name={'displayName'} label={'Display Name'} value={displayName} handleChange={handleChange} required />
+                <FormInput type={'email'} name={'email'} label={'Email'} value={email} handleChange={handleChange} required />
+                <FormInput type={'password'} name={'password'} label={'Password'} value={password} handleChange={handleChange} required />
+                <FormInput type={'password'} name={'confirmPassword'} label={'Confirm Password'} value={confirmPassword} handleChange={handleChange} required />
 
                 <div className={'buttons'}>
                     <CustomButton type={'submit'}>Sign Up</CustomButton>

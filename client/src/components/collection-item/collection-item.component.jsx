@@ -4,7 +4,7 @@ import {
     CollectionFooterContainer,
     CollectionItemContainer,
     CollectionNameContainer, CollectionPriceContainer, CustomAddCartButton,
-    CollectionImageContainer
+    CollectionImageContainer, AddToCartText
 } from "./collection-item.styles";
 
 const CollectionItem = ({ item, addItem }) => {
@@ -16,7 +16,7 @@ const CollectionItem = ({ item, addItem }) => {
                 <CollectionNameContainer>{ name }</CollectionNameContainer>
                 <CollectionPriceContainer>${ price }</CollectionPriceContainer>
             </CollectionFooterContainer>
-            <CustomAddCartButton className={'custom-button'} onClick={() => addItem(item)} inverted> Add to cart </CustomAddCartButton>
+            <CustomAddCartButton className={'custom-button'} onClick={() => addItem(item)} inverted> <AddToCartText>Add to cart</AddToCartText> </CustomAddCartButton>
         </CollectionItemContainer>
     );
 }

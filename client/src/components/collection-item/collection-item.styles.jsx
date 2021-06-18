@@ -92,6 +92,11 @@ export const CustomAddCartButton = styled(CustomButton)`
         display: block;
         opacity: 0.9;
         min-width: unset;
-        padding: 0 1.5em;
+        padding: 0;
     }
+`;
+
+export const AddToCartText = styled.span`
+  padding: 0 1.5em;
+  font-size: 13px;
 `;

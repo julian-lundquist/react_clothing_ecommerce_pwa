@@ -6,8 +6,8 @@ export const CategoryContainer = styled.div`
     align-items: center;
 `;
 
-export const CategoryTitleContainer = styled.h2`
-    font-size: 38px;
+export const CategoryTitleContainer = styled.div`
+    font-size: 2.5em;
     margin: 0 auto 30px;
 `;
 

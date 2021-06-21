@@ -11,8 +11,8 @@ export const CollectionPreviewContainer = styled.div`
 `;
 
 export const CollectionItemTitle = styled.div`
-    font-size: 28px;
-    margin-bottom: 25px;
+    font-size: 2.5em;
+    margin: 0 auto 30px;
 `;
 
 export const CollectionItemPreview = styled.div`

@@ -16,8 +16,9 @@ export const CollectionItemTitle = styled.div`
 `;
 
 export const CollectionItemPreview = styled.div`
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 2em;
     
     @media screen and (max-width: 800px) {
         display: grid;

@@ -14,7 +14,7 @@ export const CategoryTitleContainer = styled.div`
 export const CategoryItemsContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap: 15px;
+    grid-gap: 2em;
 
     & .collection-item {
       margin-bottom: 30px;

@@ -18,6 +18,7 @@ export const CheckoutImageContainer = styled.div`
     img {
       width: 9vw;
       height: auto;
+      border-radius: 0.5em;
     }
 `;
 

@@ -5,11 +5,9 @@ const path = require('path');
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
-console.log(process.env.STRIPE_SECRET_KEY)
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
-console.log(process.env.port);
 const port = process.env.PORT || 5000;
 
 app.use(bodyParser.json());

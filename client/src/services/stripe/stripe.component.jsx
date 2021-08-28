@@ -22,10 +22,10 @@ import PlacesAutocomplete, {
 import axios from "axios";
 import {SpinnerContainer} from "../../components/loading-spinner/loading-spinner.styles";
 
-if (process.env.NODE_ENV === 'production') {
-    axios.defaults.baseURL = 'https://people-clothing-live.herokuapp.com:5000';
+if (process.env.NODE_ENV === 'development') {
+    axios.defaults.baseURL = 'http://localhost:5000';
 } else {
-    axios.defaults.baseURL = 'https://localhost:5000';
+    axios.defaults.baseURL = 'https://people-clothing-live.herokuapp.com:' + process.env.PORT;
 }
 
 const CARD_OPTIONS = {

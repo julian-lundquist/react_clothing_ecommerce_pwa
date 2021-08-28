@@ -25,6 +25,7 @@ import {SpinnerContainer} from "../../components/loading-spinner/loading-spinner
 if (process.env.NODE_ENV === 'development') {
     axios.defaults.baseURL = 'http://localhost:5000';
 } else {
+    console.log('Prod Port: ' + process.env.PORT)
     axios.defaults.baseURL = 'https://people-clothing-live.herokuapp.com:' + process.env.PORT;
 }
 
